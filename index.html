@@ -14,7 +14,7 @@
 </head>
 <body>
     <main class="landing-wrapper">
-        <!-- Decorative top text (not touchable) -->
+        <!-- Decorative top text -->
         <div class="top-text">
             <span class="line line-1">Want to know me more?</span>
             <span class="line line-2">Touch me!</span>
@@ -27,14 +27,14 @@
             </svg>
         </div>
 
-        <!-- Photo + Sprite container (touchable) -->
+        <!-- Photo + Sprite container -->
         <div class="photo-sprite-container" id="photoContainer">
-            <!-- Splash sprite (now bigger) -->
+            <!-- Splash sprite (bigger, behind photo) -->
             <img src="sprite.png" alt="Decorative splash" class="sprite-img" id="spriteImg" loading="eager">
-            <!-- My photo -->
+            <!-- My photo (original size) -->
             <img src="Foto.png" alt="My photo" class="photo-img" id="photoImg" loading="eager">
 
-            <!-- Four interactive boxes (hidden by default) -->
+            <!-- Four corner boxes -->
             <div class="boxes-layer" id="boxesLayer">
                 <button class="corner-box" id="boxExperiences" data-category="Experiences">Experiences</button>
                 <button class="corner-box" id="boxTools" data-category="Tools">Tools</button>
@@ -42,10 +42,13 @@
                 <button class="corner-box" id="boxSocials" data-category="Socials">Socials</button>
             </div>
 
-            <!-- Detail box overlay (hidden) -->
+            <!-- Detail overlay -->
             <div class="detail-overlay" id="detailOverlay">
                 <button class="close-detail" id="closeDetail" aria-label="Close detail">✕</button>
                 <h2 class="detail-title" id="detailTitle"></h2>
+                <div class="detail-content">
+                    <p class="detail-placeholder">More details coming soon...</p>
+                </div>
             </div>
         </div>
 
@@ -53,7 +56,9 @@
         <p class="intro-paragraph" id="introParagraph">
             Hello! I'm a passionate creative who loves building meaningful
             connections through design, storytelling, and a touch of whimsy.
-            Let's create something beautiful together.
+            <span class="intro-extended">When I'm not crafting digital experiences, you'll find me exploring new ideas, 
+            collaborating with inspiring people, and turning imagination into reality. 
+            Let's create something beautiful together and make an impact that matters.</span>
         </p>
     </main>
 
