@@ -1,118 +1,170 @@
 // ===========================
 // script.js
-// Landing Page Interactions
+// Updated interactions: photo toggle boxes, detail expansion
 // ===========================
 
 document.addEventListener('DOMContentLoaded', () => {
-
     // --- DOM Elements ---
     const photoContainer = document.getElementById('photoContainer');
-    const touchText = document.getElementById('touchText');
     const spriteImg = document.getElementById('spriteImg');
     const photoImg = document.getElementById('photoImg');
     const introParagraph = document.getElementById('introParagraph');
+    const boxesLayer = document.getElementById('boxesLayer');
+    const detailOverlay = document.getElementById('detailOverlay');
+    const detailTitle = document.getElementById('detailTitle');
+    const closeDetailBtn = document.getElementById('closeDetail');
 
-    // --- State ---
-    let interactionTimeout = null;
+    // All four corner boxes
+    const cornerBoxes = document.querySelectorAll('.corner-box');
+
+    // --- State flags ---
+    let boxesVisible = false;
+    let detailVisible = false;
     let isAnimating = false;
 
-    // --- Interaction Handler ---
-    function handleInteraction(event) {
-        // Prevent rapid-fire animations from stacking oddly
-        if (isAnimating) return;
-
-        // Prevent default only for touch to avoid double-firing on mobile
-        if (event.type === 'touchstart') {
-            event.preventDefault();
-        }
-
-        isAnimating = true;
-
-        // 1. Pulse the sprite
+    // --- Helper: pulse & glow (visual feedback) ---
+    function pulseAndGlow() {
         if (spriteImg) {
-            // Remove class to restart animation
             spriteImg.classList.remove('pulse');
-            // Force reflow
             void spriteImg.offsetWidth;
-            // Add pulse class
             spriteImg.classList.add('pulse');
         }
-
-        // 2. Glow the photo
         if (photoImg) {
             photoImg.classList.add('glow');
         }
-
-        // 3. Highlight the intro paragraph
         if (introParagraph) {
             introParagraph.classList.add('highlight');
         }
+        setTimeout(() => {
+            if (photoImg) photoImg.classList.remove('glow');
+            if (introParagraph) introParagraph.classList.remove('highlight');
+            if (spriteImg) spriteImg.classList.remove('pulse');
+        }, 650);
+    }
 
-        // --- Cleanup after animation ---
-        if (interactionTimeout) {
-            clearTimeout(interactionTimeout);
+    // --- Show the four corner boxes ---
+    function showBoxes() {
+        if (boxesVisible) return;
+        boxesLayer.classList.add('visible');
+        boxesVisible = true;
+    }
+
+    // --- Hide the four corner boxes ---
+    function hideBoxes() {
+        if (!boxesVisible) return;
+        boxesLayer.classList.remove('visible');
+        boxesVisible = false;
+    }
+
+    // --- Show detail overlay with given title ---
+    function showDetail(title) {
+        if (detailVisible) return;
+        detailTitle.textContent = title;
+        detailOverlay.classList.add('visible');
+        detailVisible = true;
+        // Hide the corner boxes when detail appears
+        hideBoxes();
+    }
+
+    // --- Hide detail overlay and show boxes again ---
+    function hideDetail() {
+        if (!detailVisible) return;
+        detailOverlay.classList.remove('visible');
+        detailVisible = false;
+        // Bring back the four boxes
+        showBoxes();
+    }
+
+    // --- Toggle boxes from photo tap ---
+    function toggleBoxes() {
+        if (isAnimating) return;
+        if (detailVisible) {
+            // If detail is open, first close detail (which will show boxes)
+            hideDetail();
+            return;
         }
-
-        interactionTimeout = setTimeout(() => {
-            // Remove glow from photo
-            if (photoImg) {
-                photoImg.classList.remove('glow');
-            }
-            // Remove highlight from intro
-            if (introParagraph) {
-                introParagraph.classList.remove('highlight');
-            }
-            // Remove pulse from sprite (animation ends naturally, but clean up class)
-            if (spriteImg) {
-                spriteImg.classList.remove('pulse');
-            }
-
-            isAnimating = false;
-            interactionTimeout = null;
-        }, 650); // Slightly longer than the pulse animation (0.6s)
+        // Otherwise toggle the small boxes
+        if (boxesVisible) {
+            hideBoxes();
+        } else {
+            showBoxes();
+            // Pulse & glow whenever boxes appear
+            pulseAndGlow();
+        }
+        // Small lock to prevent rapid double‑taps
+        isAnimating = true;
+        setTimeout(() => { isAnimating = false; }, 350);
     }
 
-    // --- Attach Event Listeners ---
+    // --- Handle corner box click ---
+    function handleBoxClick(event) {
+        event.stopPropagation(); // Prevent toggling the photo container
+        const category = this.getAttribute('data-category');
+        if (category) {
+            showDetail(category);
+            pulseAndGlow();
+        }
+    }
 
-    // Photo container (covers the sprite + photo area)
+    // --- Handle close button on detail ---
+    function handleCloseDetail(event) {
+        event.stopPropagation();
+        hideDetail();
+    }
+
+    // --- Main photo tap handler ---
+    function handlePhotoInteraction(event) {
+        // Prevent default only for touch to avoid double-firing
+        if (event.type === 'touchstart') {
+            event.preventDefault();
+        }
+        toggleBoxes();
+    }
+
+    // --- Attach listeners ---
     if (photoContainer) {
-        photoContainer.addEventListener('click', handleInteraction);
-        photoContainer.addEventListener('touchstart', handleInteraction, { passive: false });
-    }
+        photoContainer.addEventListener('click', handlePhotoInteraction);
+        photoContainer.addEventListener('touchstart', handlePhotoInteraction, { passive: false });
 
-    // "Touch me!" text is also tappable
-    if (touchText) {
-        touchText.addEventListener('click', handleInteraction);
-        touchText.addEventListener('touchstart', handleInteraction, { passive: false });
-    }
-
-    // --- Optional: Keyboard accessibility for the photo container ---
-    if (photoContainer) {
+        // Keyboard accessibility
         photoContainer.setAttribute('tabindex', '0');
         photoContainer.setAttribute('role', 'button');
-        photoContainer.setAttribute('aria-label', 'Touch or click to interact');
-
-        photoContainer.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                handleInteraction(event);
+        photoContainer.setAttribute('aria-label', 'Touch or click to reveal options');
+        photoContainer.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleBoxes();
             }
         });
     }
 
-    if (touchText) {
-        touchText.setAttribute('tabindex', '0');
-        touchText.setAttribute('role', 'button');
-        touchText.setAttribute('aria-label', 'Touch me to know more');
+    // Bind click to each corner box
+    cornerBoxes.forEach(box => {
+        box.addEventListener('click', handleBoxClick);
+        box.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            handleBoxClick.call(box, e);
+        }, { passive: false });
+    });
 
-        touchText.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                handleInteraction(event);
+    // Close detail via button
+    if (closeDetailBtn) {
+        closeDetailBtn.addEventListener('click', handleCloseDetail);
+        closeDetailBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            handleCloseDetail(e);
+        }, { passive: false });
+    }
+
+    // Also allow clicking the detail overlay background to close
+    if (detailOverlay) {
+        detailOverlay.addEventListener('click', function(e) {
+            // Only close if the click is on the overlay itself, not a child button
+            if (e.target === detailOverlay) {
+                hideDetail();
             }
         });
     }
 
-    // --- Log for confirmation ---
-    console.log('✨ Landing page ready! Tap the photo or "Touch me!" text to interact.');
+    console.log('✨ Ready! Tap the photo to reveal Experiences, Tools, Hobbies, and Socials.');
 });
