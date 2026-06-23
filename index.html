@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get to Know Me</title>
+
+    <!-- Google Font: Play -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Link to CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Main centered wrapper -->
+    <main class="landing-wrapper">
+
+        <!-- Top text section -->
+        <div class="top-text" id="touchText">
+            <span class="line line-1">Want to know me more?</span>
+            <span class="line line-2">Touch me!</span>
+        </div>
+
+        <!-- Bouncing down arrow -->
+        <div class="arrow-container" aria-hidden="true">
+            <svg class="bouncing-arrow" width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 2L18 24L34 2" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+
+        <!-- Photo + Sprite container (the visual center) -->
+        <div class="photo-sprite-container" id="photoContainer">
+            <!-- Splash sprite behind the photo -->
+            <img
+            src="sprite.png"
+            alt="Decorative splash"
+            class="sprite-img"
+            id="spriteImg"
+            loading="eager"
+            >
+            <!-- My photo on top of the sprite -->
+            <img
+            src="Foto.png"
+            alt="My photo"
+            class="photo-img"
+            id="photoImg"
+            loading="eager"
+            >
+        </div>
+
+        <!-- Short introduction paragraph -->
+        <p class="intro-paragraph" id="introParagraph">
+            Hello! I'm a passionate creative who loves building meaningful
+            connections through design, storytelling, and a touch of whimsy.
+            Let's create something beautiful together.
+        </p>
+
+    </main>
+
+    <!-- Link to JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+/* ===========================
+   style.css
+   Landing Page Styles
+   =========================== */
+
+/* ---------- Reset & Base ---------- */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100dvh; /* dynamic viewport height for mobile */
+    background-color: #a5714f;
+    font-family: 'Play', 'Helvetica Neue', Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    padding: 1.5rem;
+}
+
+/* ---------- Main Wrapper ---------- */
+.landing-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1.2rem;
+    max-width: 500px;
+    width: 100%;
+}
+
+/* ---------- Top Text ---------- */
+.top-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: transform 0.2s ease;
+}
+
+.top-text:active {
+    transform: scale(0.96);
+}
+
+.top-text .line {
+    color: #ffffff;
+    font-family: 'Play', sans-serif;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    letter-spacing: 0.03em;
+}
+
+.top-text .line-1 {
+    font-size: clamp(1.1rem, 3.5vw, 1.45rem);
+    opacity: 0.9;
+}
+
+.top-text .line-2 {
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    line-height: 1.1;
+}
+
+/* ---------- Bouncing Arrow ---------- */
+.arrow-container {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bouncing-arrow {
+    animation: bounceArrow 1.6s ease-in-out infinite;
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
+    width: clamp(28px, 6vw, 36px);
+    height: auto;
+}
+
+@keyframes bounceArrow {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-14px);
+    }
+    50% {
+        transform: translateY(0);
+    }
+    70% {
+        transform: translateY(-6px);
+    }
+    85% {
+        transform: translateY(0);
+    }
+}
+
+/* ---------- Photo + Sprite Container ---------- */
+.photo-sprite-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Container size based on sprite dimensions */
+    width: clamp(220px, 55vw, 320px);
+    height: clamp(220px, 55vw, 320px);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.15s ease;
+}
+
+.photo-sprite-container:active {
+    transform: scale(0.97);
+}
+
+/* Sprite (splash) – behind the photo */
+.sprite-img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 1;
+    pointer-events: none;
+    transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.3));
+}
+
+/* Pulse class added via JavaScript on touch/click */
+.sprite-img.pulse {
+    animation: spritePulse 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes spritePulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    40% {
+        transform: translate(-50%, -50%) scale(1.13);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Photo – on top of the sprite */
+.photo-img {
+    position: relative;
+    z-index: 2;
+    width: clamp(90px, 28vw, 150px);
+    height: clamp(90px, 28vw, 150px);
+    object-fit: cover;
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow:
+        0 6px 24px rgba(0, 0, 0, 0.35),
+        0 0 0 4px rgba(255, 255, 255, 0.15);
+    transition: box-shadow 0.4s ease;
+}
+
+/* Glow on the photo when interacted */
+.photo-img.glow {
+    box-shadow:
+        0 6px 28px rgba(0, 0, 0, 0.4),
+        0 0 0 8px rgba(255, 255, 255, 0.35),
+        0 0 40px rgba(255, 255, 255, 0.25);
+}
+
+/* ---------- Introduction Paragraph ---------- */
+.intro-paragraph {
+    color: #ffffff;
+    font-family: 'Play', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 400;
+    font-size: clamp(0.9rem, 3vw, 1.1rem);
+    line-height: 1.65;
+    max-width: 420px;
+    text-align: center;
+    opacity: 0.85;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.4s ease, text-shadow 0.4s ease;
+    padding: 0 0.5rem;
+}
+
+/* Subtle highlight on interaction */
+.intro-paragraph.highlight {
+    opacity: 1;
+    text-shadow:
+        0 1px 6px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+/* ---------- Responsive: Tablets (768px and below) ---------- */
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+
+    .landing-wrapper {
+        gap: 1rem;
+    }
+
+    .photo-sprite-container {
+        width: clamp(180px, 60vw, 270px);
+        height: clamp(180px, 60vw, 270px);
+    }
+
+    .photo-img {
+        width: clamp(75px, 30vw, 120px);
+        height: clamp(75px, 30vw, 120px);
+    }
+
+    .arrow-container {
+        height: 26px;
+    }
+}
+
+/* ---------- Responsive: Small Phones (480px and below) ---------- */
+@media (max-width: 480px) {
+    body {
+        padding: 0.8rem;
+    }
+
+    .landing-wrapper {
+        gap: 0.7rem;
+    }
+
+    .top-text .line-1 {
+        font-size: 1rem;
+    }
+
+    .top-text .line-2 {
+        font-size: 1.35rem;
+    }
+
+    .photo-sprite-container {
+        width: clamp(150px, 65vw, 200px);
+        height: clamp(150px, 65vw, 200px);
+    }
+
+    .photo-img {
+        width: clamp(65px, 30vw, 95px);
+        height: clamp(65px, 30vw, 95px);
+        box-shadow:
+            0 4px 16px rgba(0, 0, 0, 0.35),
+            0 0 0 3px rgba(255, 255, 255, 0.12);
+    }
+
+    .intro-paragraph {
+        font-size: 0.85rem;
+        max-width: 300px;
+        line-height: 1.55;
+    }
+
+    .arrow-container {
+        height: 22px;
+    }
+
+    .bouncing-arrow {
+        width: 24px;
+    }
+}
+
+/* ---------- Responsive: Very Small Devices (360px and below) ---------- */
+@media (max-width: 360px) {
+    .landing-wrapper {
+        gap: 0.5rem;
+    }
+
+    .photo-sprite-container {
+        width: 140px;
+        height: 140px;
+    }
+
+    .photo-img {
+        width: 58px;
+        height: 58px;
+    }
+
+    .intro-paragraph {
+        font-size: 0.78rem;
+        max-width: 260px;
+    }
+}
