@@ -118,8 +118,8 @@ body {
     align-items: center;
     justify-content: center;
     /* Container size based on sprite dimensions */
-    width: clamp(220px, 55vw, 320px);
-    height: clamp(220px, 55vw, 320px);
+    width: clamp(330px, 55vw, 440px);
+    height: clamp(330px, 55vw, 440px);
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     transition: transform 0.15s ease;
