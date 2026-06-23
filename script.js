@@ -1,6 +1,6 @@
 // ===========================
 // script.js
-// Same functionality, polished
+// Same interaction logic, no change needed
 // ===========================
 
 document.addEventListener('DOMContentLoaded', () => {

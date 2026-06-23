@@ -1,7 +1,7 @@
 /* ===========================
    style.css
-   Updated – Bigger sprite, tighter gaps,
-   larger boxes, responsive desktop
+   Bigger sprite, tighter gaps,
+   boxes touching photo, balanced overlay
    =========================== */
 
 *,
@@ -28,7 +28,7 @@ body {
     align-items: center;
     justify-content: center;
     overflow-x: hidden;
-    padding: 1.5rem;
+    padding: 1.2rem;
 }
 
 /* ---------- Main Wrapper ---------- */
@@ -38,7 +38,7 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    gap: 0.6rem; /* tighter gap */
+    gap: 0.3rem;               /* tighter overall */
     max-width: 700px;
     width: 100%;
 }
@@ -48,7 +48,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.15rem;
+    gap: 0.1rem;
     user-select: none;
     -webkit-user-select: none;
     cursor: default;
@@ -63,36 +63,36 @@ body {
 }
 
 .top-text .line-1 {
-    font-size: clamp(1.1rem, 3vw, 1.45rem);
+    font-size: clamp(1rem, 3vw, 1.45rem);
     opacity: 0.9;
 }
 
 .top-text .line-2 {
-    font-size: clamp(1.5rem, 4.5vw, 2.2rem);
+    font-size: clamp(1.3rem, 4.5vw, 2.2rem);
     line-height: 1.1;
 }
 
 /* ---------- Bouncing Arrow ---------- */
 .arrow-container {
-    height: 24px; /* tighter */
+    height: 20px;               /* tighter */
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: -0.2rem;
+    margin-bottom: -0.3rem;
 }
 
 .bouncing-arrow {
     animation: bounceArrow 1.6s ease-in-out infinite;
     filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
-    width: clamp(28px, 5vw, 36px);
+    width: clamp(24px, 5vw, 34px);
     height: auto;
 }
 
 @keyframes bounceArrow {
     0%, 100% { transform: translateY(0); }
-    30% { transform: translateY(-12px); }
+    30% { transform: translateY(-10px); }
     50% { transform: translateY(0); }
-    70% { transform: translateY(-5px); }
+    70% { transform: translateY(-4px); }
     85% { transform: translateY(0); }
 }
 
@@ -102,10 +102,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Bigger container to accommodate larger sprite, 
-       but photo size stays the same (see .photo-img) */
-    width: clamp(300px, 65vw, 460px);
-    height: clamp(300px, 65vw, 460px);
+    /* Bigger container for larger sprite, especially on phones */
+    width: clamp(280px, 85vw, 480px);
+    height: clamp(280px, 85vw, 480px);
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     transition: transform 0.15s ease;
@@ -115,7 +114,7 @@ body {
     transform: scale(0.97);
 }
 
-/* Sprite (splash) – LARGER, fills container */
+/* Sprite (splash) – fills the larger container */
 .sprite-img {
     position: absolute;
     top: 50%;
@@ -140,12 +139,12 @@ body {
     100% { transform: translate(-50%, -50%) scale(1); }
 }
 
-/* Photo – ORIGINAL smaller size, independent of container */
+/* Photo – stays compact, smaller on phones */
 .photo-img {
     position: relative;
     z-index: 2;
-    width: clamp(100px, 22vw, 130px);
-    height: clamp(100px, 22vw, 130px);
+    width: clamp(75px, 20vw, 130px);
+    height: clamp(75px, 20vw, 130px);
     object-fit: cover;
     border-radius: 50%;
     pointer-events: none;
@@ -157,7 +156,7 @@ body {
     box-shadow: 0 6px 28px rgba(0, 0, 0, 0.4), 0 0 0 8px rgba(255, 255, 255, 0.35), 0 0 40px rgba(255, 255, 255, 0.25);
 }
 
-/* ---------- Four Corner Boxes (LARGER, CLOSER) ---------- */
+/* ---------- Four Corner Boxes (BIG, touching photo) ---------- */
 .boxes-layer {
     position: absolute;
     top: 0;
@@ -170,20 +169,20 @@ body {
 
 .corner-box {
     position: absolute;
-    /* Bigger default */
-    width: clamp(95px, 20vw, 140px);
-    height: clamp(44px, 8vw, 60px);
+    /* Larger default size */
+    width: clamp(100px, 22vw, 150px);
+    height: clamp(46px, 9vw, 65px);
     background-color: rgba(255, 255, 255, 0.92);
     color: #a5714f;
     font-family: 'Play', sans-serif;
     font-weight: 700;
     font-size: clamp(0.85rem, 2.8vw, 1.15rem);
     border: none;
-    border-radius: 14px;
+    border-radius: 16px;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
     cursor: pointer;
     pointer-events: auto;
-    transform: scale(0);
+    transform: scale(0) translate(0, 0);
     opacity: 0;
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease;
     will-change: transform, opacity;
@@ -194,13 +193,30 @@ body {
     padding: 0.3rem 0.6rem;
     user-select: none;
     -webkit-user-select: none;
+    /* Boxes will be repositioned via top/left/right/bottom + transform */
 }
 
-/* Positions: tighter to the photo area */
-#boxExperiences { top: 2%; left: 2%; }
-#boxTools        { top: 2%; right: 2%; }
-#boxHobbies      { bottom: 2%; right: 2%; }
-#boxSocials      { bottom: 2%; left: 2%; }
+/* Positioning: each box's closest corner to the photo is offset by a few px */
+#boxExperiences {
+    top: 50%;
+    left: 50%;
+    transform: translate(calc(-100% - 6px), calc(-100% - 6px)) scale(0);
+}
+#boxTools {
+    top: 50%;
+    right: 50%;
+    transform: translate(calc(100% + 6px), calc(-100% - 6px)) scale(0);
+}
+#boxHobbies {
+    bottom: 50%;
+    right: 50%;
+    transform: translate(calc(100% + 6px), calc(100% + 6px)) scale(0);
+}
+#boxSocials {
+    bottom: 50%;
+    left: 50%;
+    transform: translate(calc(-100% - 6px), calc(100% + 6px)) scale(0);
+}
 
 /* Visible state */
 .boxes-layer.visible .corner-box {
@@ -209,6 +225,13 @@ body {
     transition-delay: 0s;
 }
 
+/* Restore individual transforms after scaling */
+.boxes-layer.visible #boxExperiences { transform: translate(calc(-100% - 6px), calc(-100% - 6px)) scale(1); }
+.boxes-layer.visible #boxTools        { transform: translate(calc(100% + 6px), calc(-100% - 6px)) scale(1); }
+.boxes-layer.visible #boxHobbies      { transform: translate(calc(100% + 6px), calc(100% + 6px)) scale(1); }
+.boxes-layer.visible #boxSocials      { transform: translate(calc(-100% - 6px), calc(100% + 6px)) scale(1); }
+
+/* Delays for staggered pop-in */
 .boxes-layer.visible #boxExperiences { transition-delay: 0.05s; }
 .boxes-layer.visible #boxTools        { transition-delay: 0.12s; }
 .boxes-layer.visible #boxHobbies      { transition-delay: 0.19s; }
@@ -224,7 +247,7 @@ body {
     transform: scale(0.96);
 }
 
-/* ---------- Detail Overlay (LARGER) ---------- */
+/* ---------- Detail Overlay (balanced) ---------- */
 .detail-overlay {
     position: absolute;
     top: -2%;
@@ -238,8 +261,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    padding: 2.5rem 1.5rem 1.5rem;
+    justify-content: center;      /* center everything vertically */
+    padding: 2rem 1.5rem;
     transform: scale(0.85);
     opacity: 0;
     pointer-events: none;
@@ -254,13 +277,13 @@ body {
 
 .close-detail {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 36px;
-    height: 36px;
+    top: 10px;
+    right: 10px;
+    width: 34px;
+    height: 34px;
     background: none;
     border: none;
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: #a5714f;
     cursor: pointer;
     line-height: 1;
@@ -274,16 +297,15 @@ body {
 }
 
 .detail-title {
-    margin-top: 1rem;
     font-family: 'Play', sans-serif;
     font-weight: 700;
     font-size: clamp(1.6rem, 5vw, 2.6rem);
     color: #a5714f;
     text-align: center;
+    margin: 0 0 0.5rem 0;   /* small gap below title */
 }
 
 .detail-content {
-    margin-top: 1.5rem;
     color: #5a3e2b;
     font-size: 1rem;
     text-align: center;
@@ -294,15 +316,15 @@ body {
     color: #ffffff;
     font-family: 'Play', 'Helvetica Neue', Arial, sans-serif;
     font-weight: 400;
-    font-size: clamp(0.9rem, 2.8vw, 1.1rem);
-    line-height: 1.65;
+    font-size: clamp(0.85rem, 2.8vw, 1.1rem);
+    line-height: 1.6;
     max-width: 550px;
     text-align: center;
     opacity: 0.85;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
     transition: opacity 0.4s ease, text-shadow 0.4s ease;
     padding: 0 0.5rem;
-    margin-top: 0.2rem;
+    margin-top: 0.1rem;
 }
 
 .intro-paragraph.highlight {
@@ -310,54 +332,47 @@ body {
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.3);
 }
 
-/* Extended text – hidden on mobile, visible on desktop */
 .intro-extended {
     display: none;
 }
 
 /* ---------- Desktop (min-width: 769px) ---------- */
 @media (min-width: 769px) {
+    body {
+        padding: 1.5rem;
+    }
     .landing-wrapper {
-        gap: 0.8rem;
+        gap: 0.5rem;
         max-width: 750px;
     }
-
     .photo-sprite-container {
         width: 480px;
         height: 480px;
     }
-
     .photo-img {
-        width: 140px;
-        height: 140px;
-    }
-
-    .corner-box {
         width: 130px;
-        height: 55px;
+        height: 130px;
+    }
+    .corner-box {
+        width: 140px;
+        height: 60px;
         font-size: 1.1rem;
     }
-
     .detail-overlay {
-        padding: 3rem 2rem 2rem;
+        padding: 2rem 2rem;
     }
-
     .detail-title {
-        font-size: 2.4rem;
+        font-size: 2.2rem;
     }
-
     .intro-paragraph {
         max-width: 600px;
-        font-size: 1.15rem;
+        font-size: 1.1rem;
     }
-
-    /* Show extended text on desktop */
     .intro-extended {
         display: inline;
     }
-
     .arrow-container {
-        height: 28px;
+        height: 24px;
     }
 }
 
@@ -365,32 +380,31 @@ body {
 @media (min-width: 1024px) {
     .landing-wrapper {
         max-width: 850px;
-        gap: 1rem;
+        gap: 0.6rem;
     }
-
     .photo-sprite-container {
         width: 540px;
         height: 540px;
     }
-
     .photo-img {
         width: 150px;
         height: 150px;
     }
-
     .corner-box {
         width: 150px;
-        height: 62px;
-        font-size: 1.2rem;
+        height: 65px;
+        font-size: 1.15rem;
     }
-
     .detail-overlay {
-        padding: 3.5rem 2.5rem 2.5rem;
+        padding: 2.5rem 2.5rem;
     }
-
+    .detail-title {
+        font-size: 2.5rem;
+        margin-bottom: 0.6rem;
+    }
     .intro-paragraph {
         max-width: 680px;
-        font-size: 1.25rem;
+        font-size: 1.2rem;
         line-height: 1.7;
     }
 }
@@ -400,136 +414,87 @@ body {
     body {
         padding: 1rem;
     }
-
     .landing-wrapper {
-        gap: 0.5rem;
+        gap: 0.25rem;
     }
-
     .photo-sprite-container {
-        width: clamp(260px, 75vw, 380px);
-        height: clamp(260px, 75vw, 380px);
+        width: clamp(260px, 85vw, 380px);
+        height: clamp(260px, 85vw, 380px);
     }
-
     .photo-img {
-        width: clamp(90px, 26vw, 120px);
-        height: clamp(90px, 26vw, 120px);
-    }
-
-    .corner-box {
         width: clamp(80px, 22vw, 110px);
-        height: clamp(38px, 8vw, 50px);
-        font-size: 0.8rem;
-        border-radius: 12px;
+        height: clamp(80px, 22vw, 110px);
     }
-
+    .corner-box {
+        width: clamp(95px, 24vw, 120px);
+        height: clamp(42px, 8vw, 52px);
+        font-size: 0.85rem;
+    }
     .detail-overlay {
-        padding: 2rem 1rem 1.5rem;
+        padding: 1.5rem 1.2rem;
     }
-
     .detail-title {
-        font-size: 1.6rem;
+        font-size: 1.7rem;
     }
-
     .intro-paragraph {
-        max-width: 420px;
+        max-width: 450px;
     }
-
-    /* Hide extended text on tablet/mobile */
     .intro-extended {
         display: none;
     }
-
     .arrow-container {
-        height: 22px;
+        height: 18px;
     }
 }
 
 /* ---------- Small Phones ---------- */
 @media (max-width: 480px) {
     body {
-        padding: 0.6rem;
+        padding: 0.5rem;
     }
-
     .landing-wrapper {
-        gap: 0.4rem;
+        gap: 0.2rem;
     }
-
     .top-text .line-1 { font-size: 1rem; }
-    .top-text .line-2 { font-size: 1.35rem; }
-
+    .top-text .line-2 { font-size: 1.3rem; }
     .photo-sprite-container {
-        width: clamp(200px, 85vw, 250px);
-        height: clamp(200px, 85vw, 250px);
+        width: clamp(230px, 92vw, 270px);
+        height: clamp(230px, 92vw, 270px);
     }
-
     .photo-img {
-        width: clamp(70px, 28vw, 90px);
-        height: clamp(70px, 28vw, 90px);
+        width: clamp(60px, 22vw, 75px);
+        height: clamp(60px, 22vw, 75px);
     }
-
     .corner-box {
-        width: clamp(65px, 24vw, 85px);
-        height: clamp(32px, 7vw, 40px);
-        font-size: 0.7rem;
-        border-radius: 10px;
+        width: clamp(80px, 26vw, 95px);
+        height: clamp(36px, 8vw, 42px);
+        font-size: 0.75rem;
+        border-radius: 12px;
     }
-
-    #boxExperiences { top: 1%; left: 1%; }
-    #boxTools        { top: 1%; right: 1%; }
-    #boxHobbies      { bottom: 1%; right: 1%; }
-    #boxSocials      { bottom: 1%; left: 1%; }
-
     .detail-overlay {
-        padding: 1.5rem 0.8rem 1rem;
+        padding: 1.2rem 0.8rem;
     }
-
     .detail-title {
         font-size: 1.4rem;
-        margin-top: 0.5rem;
+        margin-bottom: 0.3rem;
     }
-
     .close-detail {
         font-size: 1.5rem;
         width: 28px;
         height: 28px;
-        top: 8px;
-        right: 8px;
+        top: 6px;
+        right: 6px;
     }
-
     .intro-paragraph {
-        font-size: 0.85rem;
-        max-width: 300px;
-        line-height: 1.55;
+        font-size: 0.8rem;
+        max-width: 280px;
+        line-height: 1.5;
     }
-
     .arrow-container {
-        height: 18px;
+        height: 14px;
+        margin-bottom: -0.2rem;
     }
-
     .bouncing-arrow {
-        width: 24px;
-    }
-}
-
-@media (max-width: 360px) {
-    .photo-sprite-container {
-        width: 170px;
-        height: 170px;
-    }
-
-    .photo-img {
-        width: 60px;
-        height: 60px;
-    }
-
-    .corner-box {
-        width: 58px;
-        height: 28px;
-        font-size: 0.65rem;
-    }
-
-    .intro-paragraph {
-        font-size: 0.78rem;
-        max-width: 260px;
+        width: 22px;
     }
 }
