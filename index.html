@@ -14,13 +14,13 @@
 </head>
 <body>
     <main class="landing-wrapper">
-        <!-- Decorative top text -->
+        <!-- Top text -->
         <div class="top-text">
             <span class="line line-1">Want to know me more?</span>
             <span class="line line-2">Touch me!</span>
         </div>
 
-        <!-- Bouncing arrow -->
+        <!-- Arrow -->
         <div class="arrow-container" aria-hidden="true">
             <svg class="bouncing-arrow" width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2 2L18 24L34 2" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -29,12 +29,10 @@
 
         <!-- Photo + Sprite container -->
         <div class="photo-sprite-container" id="photoContainer">
-            <!-- Splash sprite (bigger, behind photo) -->
             <img src="sprite.png" alt="Decorative splash" class="sprite-img" id="spriteImg" loading="eager">
-            <!-- My photo (compact) -->
             <img src="Foto.png" alt="My photo" class="photo-img" id="photoImg" loading="eager">
 
-            <!-- Four corner boxes (big & close to photo) -->
+            <!-- Corner boxes (original corners, bigger) -->
             <div class="boxes-layer" id="boxesLayer">
                 <button class="corner-box" id="boxExperiences" data-category="Experiences">Experiences</button>
                 <button class="corner-box" id="boxTools" data-category="Tools">Tools</button>
@@ -42,12 +40,12 @@
                 <button class="corner-box" id="boxSocials" data-category="Socials">Socials</button>
             </div>
 
-            <!-- Detail overlay -->
+            <!-- Detail overlay (dynamic content) -->
             <div class="detail-overlay" id="detailOverlay">
                 <button class="close-detail" id="closeDetail" aria-label="Close detail">✕</button>
                 <h2 class="detail-title" id="detailTitle"></h2>
-                <div class="detail-content">
-                    <p class="detail-placeholder">More details coming soon...</p>
+                <div class="detail-content" id="detailContent">
+                    <!-- Content rendered dynamically -->
                 </div>
             </div>
         </div>
