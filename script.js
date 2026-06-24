@@ -1,8 +1,3 @@
-// ===========================
-// script.js
-// Fixed interactions, backdrop, tool detail sub-views
-// ===========================
-
 document.addEventListener('DOMContentLoaded', () => {
     const photoContainer = document.getElementById('photoContainer');
     const spriteImg = document.getElementById('spriteImg');
@@ -18,9 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let boxesVisible = false;
     let detailVisible = false;
-    let currentTool = null; // track which tool detail is shown
 
-    // ---------- Pulse & glow ----------
+    // ---------- Visual feedback ----------
     function pulseAndGlow() {
         if (spriteImg) {
             spriteImg.classList.remove('pulse');
@@ -36,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 650);
     }
 
-    // ---------- Boxes visibility ----------
+    // ---------- Boxes toggling ----------
     function showBoxes() {
         if (boxesVisible) return;
         boxesLayer.classList.add('visible');
@@ -49,14 +43,13 @@ document.addEventListener('DOMContentLoaded', () => {
         boxesVisible = false;
     }
 
-    // ---------- Detail overlay management ----------
+    // ---------- Detail overlay control ----------
     function openDetail(category) {
         if (detailVisible) return;
         detailTitle.textContent = category;
-        detailContent.innerHTML = '';
-        currentTool = null;
-        // Render appropriate selection screen
-        switch(category) {
+        detailContent.innerHTML = '';  // Clear previous listeners
+
+        switch (category) {
             case 'Experiences':
                 detailContent.innerHTML = `
                     <div class="timeline">
@@ -69,49 +62,43 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="timeline-dot"></div>
                             <div class="timeline-text">Became a full‑stack creative, merging design & code.</div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
                 break;
+
             case 'Tools':
                 renderToolsSelection();
                 break;
+
             case 'Socials':
                 detailContent.innerHTML = `
                     <div class="social-grid">
                         <a href="tel:+1234567890" class="social-item" target="_blank" rel="noopener">
-                            <div class="social-icon">📞</div>
-                            <span>Phone</span>
+                            <div class="social-icon">📞</div><span>Phone</span>
                         </a>
                         <a href="mailto:hello@example.com" class="social-item" target="_blank" rel="noopener">
-                            <div class="social-icon">✉️</div>
-                            <span>Email</span>
+                            <div class="social-icon">✉️</div><span>Email</span>
                         </a>
                         <a href="https://instagram.com/yourhandle" class="social-item" target="_blank" rel="noopener">
-                            <div class="social-icon">📷</div>
-                            <span>Instagram</span>
+                            <div class="social-icon">📷</div><span>Instagram</span>
                         </a>
                         <a href="https://linkedin.com/in/yourprofile" class="social-item" target="_blank" rel="noopener">
-                            <div class="social-icon">🔗</div>
-                            <span>LinkedIn</span>
+                            <div class="social-icon">🔗</div><span>LinkedIn</span>
                         </a>
-                    </div>
-                `;
+                    </div>`;
                 break;
+
             case 'Hobbies':
                 detailContent.innerHTML = `
                     <p style="color:#3e2b1c; text-align:center; font-size:1.1rem; line-height:1.8;">
                         🌿 Hiking &nbsp;|&nbsp; 📚 Reading &nbsp;|&nbsp; 🎨 Painting &nbsp;|&nbsp; 🎮 Gaming
-                    </p>
-                `;
+                    </p>`;
                 break;
         }
-        // Show overlay and backdrop
+
         detailOverlay.classList.add('visible');
         overlayBackdrop.classList.add('visible');
         detailVisible = true;
         hideBoxes();
-        // Attach tool selection listeners if needed
-        if (category === 'Tools') attachToolSelectionListeners();
     }
 
     function closeDetail() {
@@ -122,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showBoxes();
     }
 
-    // ---------- Tools sub-view ----------
+    // ---------- Tools sub-views ----------
     function renderToolsSelection() {
         detailContent.innerHTML = `
             <div class="tools-selection">
@@ -138,65 +125,54 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="tool-choice" data-tool="Tableau">
                     <span class="tool-choice-icon">📈</span> Tableau
                 </button>
-            </div>
-        `;
+            </div>`;
+        attachToolChoiceListeners();
     }
 
-    function attachToolSelectionListeners() {
-        const choices = document.querySelectorAll('.tool-choice');
-        choices.forEach(choice => {
-            choice.addEventListener('click', (e) => {
+    function attachToolChoiceListeners() {
+        document.querySelectorAll('.tool-choice').forEach(btn => {
+            btn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const tool = choice.getAttribute('data-tool');
+                const tool = btn.getAttribute('data-tool');
                 showToolDetail(tool);
             });
         });
     }
 
     function showToolDetail(toolName) {
-        currentTool = toolName;
         detailTitle.textContent = toolName;
         detailContent.innerHTML = `
             <button class="back-button" id="backToTools">← Back to all tools</button>
             <div class="tool-detail-container">
                 <div class="tool-detail-chart">[${toolName} chart placeholder]</div>
                 <div class="tool-detail-text">
-                    Detailed information about ${toolName}. This is where you would place a description of your skills and experience with this tool, including any relevant projects or achievements.
+                    Detailed information about <strong>${toolName}</strong>. 
+                    Here you can describe your skills, experience, and projects related to this tool.
                 </div>
-            </div>
-        `;
-        // Attach back button listener
-        const backBtn = document.getElementById('backToTools');
-        if (backBtn) {
-            backBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                detailTitle.textContent = 'Tools';
-                renderToolsSelection();
-                attachToolSelectionListeners();
-            });
-        }
-    }
-
-    // ---------- Main photo interaction ----------
-    function toggleBoxes(e) {
-        if (e) e.stopPropagation();
-        if (detailVisible) {
-            closeDetail();
-            return;
-        }
-        if (boxesVisible) {
-            hideBoxes();
-        } else {
-            showBoxes();
-            pulseAndGlow();
-        }
+            </div>`;
+        document.getElementById('backToTools').addEventListener('click', (e) => {
+            e.stopPropagation();
+            detailTitle.textContent = 'Tools';
+            renderToolsSelection();
+        });
     }
 
     // ---------- Event listeners ----------
-    photoContainer.addEventListener('click', toggleBoxes);
+    photoContainer.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (detailVisible) {
+            closeDetail();
+        } else {
+            boxesVisible ? hideBoxes() : showBoxes();
+            if (!boxesVisible) pulseAndGlow(); // only when showing boxes
+        }
+    });
+
+    // Touch support
     photoContainer.addEventListener('touchstart', (e) => {
         e.preventDefault();
-        toggleBoxes(e);
+        e.stopPropagation();
+        photoContainer.click();
     }, { passive: false });
 
     cornerBoxes.forEach(box => {
@@ -212,34 +188,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: false });
     });
 
-    closeDetailBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        closeDetail();
-    });
+    closeDetailBtn.addEventListener('click', closeDetail);
     closeDetailBtn.addEventListener('touchstart', (e) => {
         e.preventDefault();
-        e.stopPropagation();
         closeDetail();
     }, { passive: false });
 
-    // Backdrop click closes overlay
-    overlayBackdrop.addEventListener('click', (e) => {
-        e.stopPropagation();
-        closeDetail();
-    });
+    overlayBackdrop.addEventListener('click', closeDetail);
     overlayBackdrop.addEventListener('touchstart', (e) => {
         e.preventDefault();
-        e.stopPropagation();
         closeDetail();
     }, { passive: false });
 
-    // Prevent overlay content clicks from bubbling to backdrop
-    detailOverlay.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
-    detailOverlay.addEventListener('touchstart', (e) => {
-        e.stopPropagation();
-    });
+    // Prevent overlay content clicks from closing
+    detailOverlay.addEventListener('click', (e) => e.stopPropagation());
+    detailOverlay.addEventListener('touchstart', (e) => e.stopPropagation());
 
     // Keyboard accessibility
     photoContainer.setAttribute('tabindex', '0');
@@ -248,9 +211,9 @@ document.addEventListener('DOMContentLoaded', () => {
     photoContainer.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            toggleBoxes();
+            photoContainer.click();
         }
     });
 
-    console.log('✨ Ready! Tap the photo to explore Experiences, Tools, Hobbies, and Socials.');
+    console.log('✨ Ready! Tap the photo to explore.');
 });

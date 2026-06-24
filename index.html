@@ -4,23 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get to Know Me</title>
-
-    <!-- Google Font: Play -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <main class="landing-wrapper">
-        <!-- Top text -->
         <div class="top-text">
             <span class="line line-1">Want to know me more?</span>
             <span class="line line-2">Touch me!</span>
         </div>
-
-        <!-- Arrow -->
         <div class="arrow-container" aria-hidden="true">
             <svg class="bouncing-arrow" width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2 2L18 24L34 2" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -29,39 +23,36 @@
 
         <!-- Photo + Sprite container -->
         <div class="photo-sprite-container" id="photoContainer">
-            <img src="sprite.png" alt="Decorative splash" class="sprite-img" id="spriteImg" loading="eager">
-            <img src="Foto.png" alt="My photo" class="photo-img" id="photoImg" loading="eager">
+            <img src="sprite.png" alt="Decorative splash" class="sprite-img" id="spriteImg">
+            <img src="Foto.png" alt="My photo" class="photo-img" id="photoImg">
 
-            <!-- Corner boxes (larger) -->
+            <!-- Corner boxes (much larger) -->
             <div class="boxes-layer" id="boxesLayer">
-                <button class="corner-box" id="boxExperiences" data-category="Experiences">Experiences</button>
-                <button class="corner-box" id="boxTools" data-category="Tools">Tools</button>
-                <button class="corner-box" id="boxHobbies" data-category="Hobbies">Hobbies</button>
-                <button class="corner-box" id="boxSocials" data-category="Socials">Socials</button>
-            </div>
-
-            <!-- Backdrop for closing overlay (outside click) -->
-            <div class="overlay-backdrop" id="overlayBackdrop"></div>
-
-            <!-- Detail overlay -->
-            <div class="detail-overlay" id="detailOverlay">
-                <button class="close-detail" id="closeDetail" aria-label="Close detail">✕</button>
-                <h2 class="detail-title" id="detailTitle"></h2>
-                <div class="detail-content" id="detailContent">
-                    <!-- Rendered dynamically -->
-                </div>
+                <button class="corner-box" data-category="Experiences">Experiences</button>
+                <button class="corner-box" data-category="Tools">Tools</button>
+                <button class="corner-box" data-category="Hobbies">Hobbies</button>
+                <button class="corner-box" data-category="Socials">Socials</button>
             </div>
         </div>
 
-        <!-- Introduction text -->
         <p class="intro-paragraph" id="introParagraph">
             Hello! I'm a passionate creative who loves building meaningful
             connections through design, storytelling, and a touch of whimsy.
-            <span class="intro-extended">When I'm not crafting digital experiences, you'll find me exploring new ideas, 
-            collaborating with inspiring people, and turning imagination into reality. 
+            <span class="intro-extended">When I'm not crafting digital experiences, you'll find me exploring new ideas,
+            collaborating with inspiring people, and turning imagination into reality.
             Let's create something beautiful together and make an impact that matters.</span>
         </p>
     </main>
+
+    <!-- Overlay backdrop (fixed) -->
+    <div class="overlay-backdrop" id="overlayBackdrop"></div>
+
+    <!-- Detail overlay (fixed) -->
+    <div class="detail-overlay" id="detailOverlay">
+        <button class="close-detail" id="closeDetail" aria-label="Close">✕</button>
+        <h2 class="detail-title" id="detailTitle"></h2>
+        <div class="detail-content" id="detailContent"></div>
+    </div>
 
     <script src="script.js"></script>
 </body>
