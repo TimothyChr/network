@@ -1,6 +1,6 @@
 // ===========================
 // script.js
-// Dynamic overlay content rendering
+// Fixed interactions, backdrop, tool detail sub-views
 // ===========================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -13,109 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const detailTitle = document.getElementById('detailTitle');
     const detailContent = document.getElementById('detailContent');
     const closeDetailBtn = document.getElementById('closeDetail');
+    const overlayBackdrop = document.getElementById('overlayBackdrop');
     const cornerBoxes = document.querySelectorAll('.corner-box');
 
     let boxesVisible = false;
     let detailVisible = false;
-    let isAnimating = false;
-
-    // ---------- Content renderers ----------
-    function renderExperiences() {
-        detailContent.innerHTML = `
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-text">Started my journey as a junior designer – learned the fundamentals of visual storytelling.</div>
-                </div>
-                <div class="timeline-line"></div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-text">Evolved into a full‑stack creative, bridging design and code to build seamless experiences.</div>
-                </div>
-            </div>
-        `;
-    }
-
-    function renderSocials() {
-        detailContent.innerHTML = `
-            <div class="social-grid">
-                <a href="tel:+1234567890" class="social-item" target="_blank" rel="noopener">
-                    <div class="social-icon">📞</div>
-                    <span>Phone</span>
-                </a>
-                <a href="mailto:hello@example.com" class="social-item" target="_blank" rel="noopener">
-                    <div class="social-icon">✉️</div>
-                    <span>Email</span>
-                </a>
-                <a href="https://instagram.com/yourhandle" class="social-item" target="_blank" rel="noopener">
-                    <div class="social-icon">📷</div>
-                    <span>Instagram</span>
-                </a>
-                <a href="https://linkedin.com/in/yourprofile" class="social-item" target="_blank" rel="noopener">
-                    <div class="social-icon">🔗</div>
-                    <span>LinkedIn</span>
-                </a>
-            </div>
-        `;
-    }
-
-    function renderTools() {
-        detailContent.innerHTML = `
-            <div class="tools-list">
-                <div class="tool-card">
-                    <div class="tool-icon">📊</div>
-                    <div class="tool-graph-placeholder">[Excel chart]</div>
-                    <div class="tool-text">Excel – data cleaning, pivot tables, and dynamic dashboards.</div>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">🐍</div>
-                    <div class="tool-graph-placeholder">[Python plot]</div>
-                    <div class="tool-text">Python – scripting, data analysis, and automation with pandas & matplotlib.</div>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">🗄️</div>
-                    <div class="tool-graph-placeholder">[SQL query]</div>
-                    <div class="tool-text">SQL – complex queries, database design, and performance tuning.</div>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">📈</div>
-                    <div class="tool-graph-placeholder">[Tableau viz]</div>
-                    <div class="tool-text">Tableau – interactive visualizations and storytelling with data.</div>
-                </div>
-            </div>
-        `;
-    }
-
-    function renderHobbies() {
-        detailContent.innerHTML = `
-            <p style="color:#3e2b1c; text-align:center; font-size:1rem; line-height:1.6;">
-                🌿 Hiking &nbsp;|&nbsp; 📚 Reading &nbsp;|&nbsp; 🎨 Painting &nbsp;|&nbsp; 🎮 Gaming
-            </p>
-        `;
-    }
-
-    function showDetail(category) {
-        if (detailVisible) return;
-        detailTitle.textContent = category;
-        // Render appropriate content
-        switch(category) {
-            case 'Experiences': renderExperiences(); break;
-            case 'Tools': renderTools(); break;
-            case 'Socials': renderSocials(); break;
-            case 'Hobbies': renderHobbies(); break;
-            default: detailContent.innerHTML = '';
-        }
-        detailOverlay.classList.add('visible');
-        detailVisible = true;
-        hideBoxes();
-    }
-
-    function hideDetail() {
-        if (!detailVisible) return;
-        detailOverlay.classList.remove('visible');
-        detailVisible = false;
-        showBoxes();
-    }
+    let currentTool = null; // track which tool detail is shown
 
     // ---------- Pulse & glow ----------
     function pulseAndGlow() {
@@ -133,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 650);
     }
 
+    // ---------- Boxes visibility ----------
     function showBoxes() {
         if (boxesVisible) return;
         boxesLayer.classList.add('visible');
@@ -145,10 +49,139 @@ document.addEventListener('DOMContentLoaded', () => {
         boxesVisible = false;
     }
 
-    function toggleBoxes() {
-        if (isAnimating) return;
+    // ---------- Detail overlay management ----------
+    function openDetail(category) {
+        if (detailVisible) return;
+        detailTitle.textContent = category;
+        detailContent.innerHTML = '';
+        currentTool = null;
+        // Render appropriate selection screen
+        switch(category) {
+            case 'Experiences':
+                detailContent.innerHTML = `
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-text">Started as junior designer – learned visual storytelling.</div>
+                        </div>
+                        <div class="timeline-line"></div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-text">Became a full‑stack creative, merging design & code.</div>
+                        </div>
+                    </div>
+                `;
+                break;
+            case 'Tools':
+                renderToolsSelection();
+                break;
+            case 'Socials':
+                detailContent.innerHTML = `
+                    <div class="social-grid">
+                        <a href="tel:+1234567890" class="social-item" target="_blank" rel="noopener">
+                            <div class="social-icon">📞</div>
+                            <span>Phone</span>
+                        </a>
+                        <a href="mailto:hello@example.com" class="social-item" target="_blank" rel="noopener">
+                            <div class="social-icon">✉️</div>
+                            <span>Email</span>
+                        </a>
+                        <a href="https://instagram.com/yourhandle" class="social-item" target="_blank" rel="noopener">
+                            <div class="social-icon">📷</div>
+                            <span>Instagram</span>
+                        </a>
+                        <a href="https://linkedin.com/in/yourprofile" class="social-item" target="_blank" rel="noopener">
+                            <div class="social-icon">🔗</div>
+                            <span>LinkedIn</span>
+                        </a>
+                    </div>
+                `;
+                break;
+            case 'Hobbies':
+                detailContent.innerHTML = `
+                    <p style="color:#3e2b1c; text-align:center; font-size:1.1rem; line-height:1.8;">
+                        🌿 Hiking &nbsp;|&nbsp; 📚 Reading &nbsp;|&nbsp; 🎨 Painting &nbsp;|&nbsp; 🎮 Gaming
+                    </p>
+                `;
+                break;
+        }
+        // Show overlay and backdrop
+        detailOverlay.classList.add('visible');
+        overlayBackdrop.classList.add('visible');
+        detailVisible = true;
+        hideBoxes();
+        // Attach tool selection listeners if needed
+        if (category === 'Tools') attachToolSelectionListeners();
+    }
+
+    function closeDetail() {
+        if (!detailVisible) return;
+        detailOverlay.classList.remove('visible');
+        overlayBackdrop.classList.remove('visible');
+        detailVisible = false;
+        showBoxes();
+    }
+
+    // ---------- Tools sub-view ----------
+    function renderToolsSelection() {
+        detailContent.innerHTML = `
+            <div class="tools-selection">
+                <button class="tool-choice" data-tool="Excel">
+                    <span class="tool-choice-icon">📊</span> Excel
+                </button>
+                <button class="tool-choice" data-tool="Python">
+                    <span class="tool-choice-icon">🐍</span> Python
+                </button>
+                <button class="tool-choice" data-tool="SQL">
+                    <span class="tool-choice-icon">🗄️</span> SQL
+                </button>
+                <button class="tool-choice" data-tool="Tableau">
+                    <span class="tool-choice-icon">📈</span> Tableau
+                </button>
+            </div>
+        `;
+    }
+
+    function attachToolSelectionListeners() {
+        const choices = document.querySelectorAll('.tool-choice');
+        choices.forEach(choice => {
+            choice.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const tool = choice.getAttribute('data-tool');
+                showToolDetail(tool);
+            });
+        });
+    }
+
+    function showToolDetail(toolName) {
+        currentTool = toolName;
+        detailTitle.textContent = toolName;
+        detailContent.innerHTML = `
+            <button class="back-button" id="backToTools">← Back to all tools</button>
+            <div class="tool-detail-container">
+                <div class="tool-detail-chart">[${toolName} chart placeholder]</div>
+                <div class="tool-detail-text">
+                    Detailed information about ${toolName}. This is where you would place a description of your skills and experience with this tool, including any relevant projects or achievements.
+                </div>
+            </div>
+        `;
+        // Attach back button listener
+        const backBtn = document.getElementById('backToTools');
+        if (backBtn) {
+            backBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                detailTitle.textContent = 'Tools';
+                renderToolsSelection();
+                attachToolSelectionListeners();
+            });
+        }
+    }
+
+    // ---------- Main photo interaction ----------
+    function toggleBoxes(e) {
+        if (e) e.stopPropagation();
         if (detailVisible) {
-            hideDetail();
+            closeDetail();
             return;
         }
         if (boxesVisible) {
@@ -157,48 +190,67 @@ document.addEventListener('DOMContentLoaded', () => {
             showBoxes();
             pulseAndGlow();
         }
-        isAnimating = true;
-        setTimeout(() => { isAnimating = false; }, 350);
     }
 
-    // ---------- Event binding ----------
-    if (photoContainer) {
-        photoContainer.addEventListener('click', toggleBoxes);
-        photoContainer.addEventListener('touchstart', (e) => { e.preventDefault(); toggleBoxes(); }, { passive: false });
-        photoContainer.setAttribute('tabindex', '0');
-        photoContainer.setAttribute('role', 'button');
-        photoContainer.setAttribute('aria-label', 'Touch to reveal options');
-        photoContainer.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleBoxes(); }
-        });
-    }
+    // ---------- Event listeners ----------
+    photoContainer.addEventListener('click', toggleBoxes);
+    photoContainer.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        toggleBoxes(e);
+    }, { passive: false });
 
     cornerBoxes.forEach(box => {
-        box.addEventListener('click', function(e) {
+        box.addEventListener('click', (e) => {
             e.stopPropagation();
-            const category = this.getAttribute('data-category');
-            if (category) {
-                showDetail(category);
-                pulseAndGlow();
-            }
+            const category = box.getAttribute('data-category');
+            if (category) openDetail(category);
         });
         box.addEventListener('touchstart', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            this.click();
+            box.click();
         }, { passive: false });
     });
 
-    if (closeDetailBtn) {
-        closeDetailBtn.addEventListener('click', (e) => { e.stopPropagation(); hideDetail(); });
-        closeDetailBtn.addEventListener('touchstart', (e) => { e.preventDefault(); e.stopPropagation(); hideDetail(); }, { passive: false });
-    }
+    closeDetailBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeDetail();
+    });
+    closeDetailBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeDetail();
+    }, { passive: false });
 
-    if (detailOverlay) {
-        detailOverlay.addEventListener('click', function(e) {
-            if (e.target === detailOverlay) hideDetail();
-        });
-    }
+    // Backdrop click closes overlay
+    overlayBackdrop.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeDetail();
+    });
+    overlayBackdrop.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeDetail();
+    }, { passive: false });
 
-    console.log('✨ Ready! Tap the photo to reveal Experiences, Tools, Hobbies, and Socials.');
+    // Prevent overlay content clicks from bubbling to backdrop
+    detailOverlay.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+    detailOverlay.addEventListener('touchstart', (e) => {
+        e.stopPropagation();
+    });
+
+    // Keyboard accessibility
+    photoContainer.setAttribute('tabindex', '0');
+    photoContainer.setAttribute('role', 'button');
+    photoContainer.setAttribute('aria-label', 'Touch to reveal options');
+    photoContainer.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleBoxes();
+        }
+    });
+
+    console.log('✨ Ready! Tap the photo to explore Experiences, Tools, Hobbies, and Socials.');
 });

@@ -32,7 +32,7 @@
             <img src="sprite.png" alt="Decorative splash" class="sprite-img" id="spriteImg" loading="eager">
             <img src="Foto.png" alt="My photo" class="photo-img" id="photoImg" loading="eager">
 
-            <!-- Corner boxes (original corners, bigger) -->
+            <!-- Corner boxes (larger) -->
             <div class="boxes-layer" id="boxesLayer">
                 <button class="corner-box" id="boxExperiences" data-category="Experiences">Experiences</button>
                 <button class="corner-box" id="boxTools" data-category="Tools">Tools</button>
@@ -40,12 +40,15 @@
                 <button class="corner-box" id="boxSocials" data-category="Socials">Socials</button>
             </div>
 
-            <!-- Detail overlay (dynamic content) -->
+            <!-- Backdrop for closing overlay (outside click) -->
+            <div class="overlay-backdrop" id="overlayBackdrop"></div>
+
+            <!-- Detail overlay -->
             <div class="detail-overlay" id="detailOverlay">
                 <button class="close-detail" id="closeDetail" aria-label="Close detail">✕</button>
                 <h2 class="detail-title" id="detailTitle"></h2>
                 <div class="detail-content" id="detailContent">
-                    <!-- Content rendered dynamically -->
+                    <!-- Rendered dynamically -->
                 </div>
             </div>
         </div>
