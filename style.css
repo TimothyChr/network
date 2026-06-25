@@ -1,7 +1,3 @@
-/* ===========================
-   style.css
-   =========================== */
-
 *,
 *::before,
 *::after {
@@ -30,7 +26,7 @@ body {
     position: relative;
 }
 
-/* ---- Landing wrapper ---- */
+/* Landing wrapper */
 .landing-wrapper {
     position: relative;
     z-index: 1;
@@ -129,7 +125,7 @@ body {
     box-shadow: 0 6px 28px rgba(0,0,0,0.4), 0 0 0 8px rgba(255,255,255,0.35), 0 0 40px rgba(255,255,255,0.25);
 }
 
-/* ---- Fixed dimmer ---- */
+/* Fixed dimmer */
 .fixed-dimmer {
     position: fixed;
     top: 0; left: 0;
@@ -145,7 +141,7 @@ body {
     pointer-events: auto;
 }
 
-/* ---- Fixed corner boxes ---- */
+/* Fixed corner boxes */
 .fixed-boxes-container {
     position: fixed;
     top: 0; left: 0;
@@ -161,7 +157,6 @@ body {
 }
 .corner-box {
     position: absolute;
-    /* SIZE */
     width: clamp(110px, 25vw, 180px);
     height: clamp(50px, 9vw, 75px);
     background-color: rgba(255,255,255,0.95);
@@ -201,7 +196,7 @@ body {
 }
 .corner-box:active { transform: scale(0.95); }
 
-/* ---- Overlay backdrop ---- */
+/* Overlay backdrop */
 .overlay-backdrop {
     position: fixed;
     top: 0; left: 0;
@@ -217,7 +212,7 @@ body {
     pointer-events: auto;
 }
 
-/* ---- Detail overlay ---- */
+/* Detail overlay */
 .detail-overlay {
     position: fixed;
     top: 50%; left: 50%;
@@ -278,13 +273,12 @@ body {
     align-items: center;
 }
 
-/* ========== EXPERIENCES: Fluid Timeline Image + Markers ========== */
-/* Recommended image dimensions: 1200px wide × 200px tall (keeps markers well-spaced) */
-.timeline-fluid-wrapper {
-    position: relative;
+/* ---- EXPERIENCES ---- */
+/* Timeline image and marker row */
+.timeline-image-container {
     width: 100%;
-    max-width: 900px;          /* limits size on large screens */
-    margin: 0 auto;
+    max-width: 900px;
+    margin: 0 auto 1.2rem;
 }
 .timeline-image {
     width: 100%;
@@ -293,59 +287,44 @@ body {
     border-radius: 16px;
 }
 
-/* Markers placed using percentages – edit these values to match your image */
-.activity-marker {
-    position: absolute;
-    transform: translate(-50%, -50%);
+/* Markers row (under the image) */
+.markers-row {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.marker-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    pointer-events: none;
     color: #3e2b1c;
-    background: rgba(255,255,255,0.85);
-    padding: 0.15rem 0.4rem;
-    border-radius: 6px;
-    white-space: nowrap;
 }
 .marker-dot {
-    width: 10px; height: 10px;
+    width: 12px; height: 12px;
     background: #a5714f;
     border-radius: 50%;
-    margin-bottom: 0.15rem;
+    margin-bottom: 0.3rem;
 }
 .marker-label {
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     font-weight: 600;
     line-height: 1.2;
 }
 .marker-date {
-    font-size: 0.6rem;
+    font-size: 0.75rem;
     opacity: 0.8;
 }
 
-/* Desktop: horizontal markers (all at same vertical position) */
-@media (min-width: 769px) {
-    .activity-marker { top: 50%; }   /* vertically centered */
-    /* Left positions: adjust these percentages to place markers */
-    .activity-marker:nth-child(1) { left: 10%; }
-    .activity-marker:nth-child(2) { left: 28%; }
-    .activity-marker:nth-child(3) { left: 46%; }
-    .activity-marker:nth-child(4) { left: 64%; }
-    .activity-marker:nth-child(5) { left: 82%; }
-}
-
-/* Mobile/tablet: vertical markers (left centered, top percentages) */
+/* Mobile: stack markers vertically */
 @media (max-width: 768px) {
-    .timeline-fluid-wrapper {
-        width: 85%;
+    .markers-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.2rem;
     }
-    .activity-marker { left: 50%; }  /* horizontally centered */
-    .activity-marker:nth-child(1) { top: 10%; }
-    .activity-marker:nth-child(2) { top: 30%; }
-    .activity-marker:nth-child(3) { top: 50%; }
-    .activity-marker:nth-child(4) { top: 70%; }
-    .activity-marker:nth-child(5) { top: 90%; }
 }
 
 /* ---- Hobbies ---- */
@@ -497,7 +476,7 @@ body {
 }
 .intro-extended { display: none; }
 
-/* ---- Desktop adjustments (non-experiences) ---- */
+/* Desktop adjustments */
 @media (min-width: 769px) {
     .detail-overlay {
         width: 80vw;
@@ -543,12 +522,10 @@ body {
     .detail-overlay { width: 70vw; max-width: 950px; }
 }
 
-/* Tablet */
 @media (max-width: 768px) {
     .detail-overlay { padding: 2rem 1.2rem; }
 }
 
-/* Small phones */
 @media (max-width: 480px) {
     .corner-box {
         width: clamp(90px, 35vw, 120px);
