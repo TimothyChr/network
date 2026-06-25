@@ -158,8 +158,8 @@ body {
 .corner-box {
     position: absolute;
     /* SIZE: increased for better visibility */
-    width: clamp(130px, 28vw, 200px);
-    height: clamp(60px, 10vw, 85px);
+    width: clamp(195px, 28vw, 300px);
+    height: clamp(100px, 10vw, 137px);
     background-color: rgba(255,255,255,0.95);
     color: #a5714f;
     font-family: 'Play', sans-serif;
@@ -292,7 +292,7 @@ body {
 .markers-row {
     display: flex;
     justify-content: center;
-    gap: 2.5rem;                /* increased gap between markers */
+    gap: 3rem;                /* increased gap between markers */
     flex-wrap: wrap;
     width: 100%;
     padding: 0.5rem 0;          /* a bit of breathing room */

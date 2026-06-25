@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const rect = photoContainer.getBoundingClientRect();
         const boxWidth = cornerBoxes[0].offsetWidth;
         const boxHeight = cornerBoxes[0].offsetHeight;
-        const offset = 0.05;        // changed from 0.08 to 0.05 – brings boxes closer to centre
+        const offset = 0.03;        // changed from 0.08 to 0.05 – brings boxes closer to centre
 
         cornerBoxes[0].style.left = (rect.left + rect.width * offset - boxWidth / 2) + 'px';
         cornerBoxes[0].style.top  = (rect.top  + rect.height * offset - boxHeight / 2) + 'px';
