@@ -1,12 +1,13 @@
 // ===========================
 // script.js
-// Only photo area dims for boxes
-// Experiences = rectangular image placeholders
+// Dim everything except boxes.
+// Experiences – single placeholder with markers.
 // ===========================
 
 document.addEventListener('DOMContentLoaded', () => {
     const photoContainer = document.getElementById('photoContainer');
     const photoDimmer = document.getElementById('photoDimmer');
+    const globalDimmer = document.getElementById('globalDimmer');
     const spriteImg = document.getElementById('spriteImg');
     const photoImg = document.getElementById('photoImg');
     const introParagraph = document.getElementById('introParagraph');
@@ -16,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const detailContent = document.getElementById('detailContent');
     const closeDetailBtn = document.getElementById('closeDetail');
     const overlayBackdrop = document.getElementById('overlayBackdrop');
-    const bgDimmer = document.getElementById('bgDimmer');
     const cornerBoxes = document.querySelectorAll('.corner-box');
 
     let boxesVisible = false;
@@ -38,21 +38,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 650);
     }
 
-    // ---------- Boxes toggling ----------
+    // ---------- Boxes toggling (with dimming) ----------
     function showBoxes() {
         if (boxesVisible) return;
         boxesLayer.classList.add('visible');
-        photoDimmer.classList.add('active'); // Only dim inside photo container
+        // Activate both dimmers → everything dims except boxes (z-index 4)
+        globalDimmer.classList.add('active');
+        photoDimmer.classList.add('active');
         boxesVisible = true;
     }
     function hideBoxes() {
         if (!boxesVisible) return;
         boxesLayer.classList.remove('visible');
+        globalDimmer.classList.remove('active');
         photoDimmer.classList.remove('active');
         boxesVisible = false;
     }
 
-    // ---------- Detail overlay ----------
+    // ---------- Detail overlay (no dimmers from boxes) ----------
     function openDetail(category) {
         if (detailVisible) return;
         detailTitle.textContent = category;
@@ -89,8 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         detailOverlay.classList.add('visible');
         overlayBackdrop.classList.add('visible');
-        bgDimmer.classList.add('active');
         detailVisible = true;
+        // Hide boxes and their dimmers when detail opens
         hideBoxes();
     }
 
@@ -98,36 +101,40 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!detailVisible) return;
         detailOverlay.classList.remove('visible');
         overlayBackdrop.classList.remove('visible');
-        bgDimmer.classList.remove('active');
         detailVisible = false;
+        // Show boxes again (they will reapply dimmers)
         showBoxes();
     }
 
-    // ---------- EXPERIENCES: Rectangular image placeholders ----------
+    // ---------- EXPERIENCES: Single placeholder with markers ----------
     function renderExperiences() {
         const activities = [
-            { label: 'Activity 1 – Design fundamentals', date: '2020, Jan' },
-            { label: 'Activity 2 – First portfolio website', date: '2020, Aug' },
-            { label: 'Activity 3 – Creative agency intern', date: '2021, Jun' },
-            { label: 'Activity 4 – Led client project', date: '2022, Mar' },
-            { label: 'Activity 5 – Launched studio', date: '2023, Dec' }
+            { date: '2020, Jan', label: 'Activity 1' },
+            { date: '2020, Aug', label: 'Activity 2' },
+            { date: '2021, Jun', label: 'Activity 3' },
+            { date: '2022, Mar', label: 'Activity 4' },
+            { date: '2023, Dec', label: 'Activity 5' }
         ];
 
-        let html = '<div class="experiences-grid">';
-        activities.forEach(item => {
-            html += `
-                <div class="experience-block">
-                    <div class="experience-img-placeholder">
-                        [Image: ${item.label}]
-                    </div>
-                    <div class="experience-label">${item.date} – ${item.label}</div>
+        let markersHTML = '';
+        activities.forEach(act => {
+            markersHTML += `
+                <div class="activity-marker">
+                    <div class="marker-dot"></div>
+                    <div class="marker-label">${act.label}</div>
+                    <div class="marker-date">${act.date}</div>
                 </div>`;
         });
-        html += '</div>';
-        detailContent.innerHTML = html;
+
+        detailContent.innerHTML = `
+            <div class="experiences-placeholder">
+                ${markersHTML}
+            </div>
+            <p style="margin-top:1rem; color:#3e2b1c; font-size:0.9rem;">(Replace this placeholder with your own design)</p>
+        `;
     }
 
-    // ---------- HOBBIES: image placeholders + text ----------
+    // ---------- HOBBIES ----------
     function renderHobbies() {
         const hobbies = [
             { icon: '🌿', name: 'Hiking', desc: 'Exploring mountain trails and national parks on weekends.' },
@@ -239,13 +246,14 @@ document.addEventListener('DOMContentLoaded', () => {
         closeDetail();
     }, { passive: false });
 
-    bgDimmer.addEventListener('click', () => {
+    detailOverlay.addEventListener('click', (e) => e.stopPropagation());
+    detailOverlay.addEventListener('touchstart', (e) => e.stopPropagation());
+
+    // Global dimmer click closes boxes (if no detail open)
+    globalDimmer.addEventListener('click', () => {
         if (detailVisible) closeDetail();
         else if (boxesVisible) hideBoxes();
     });
-
-    detailOverlay.addEventListener('click', (e) => e.stopPropagation());
-    detailOverlay.addEventListener('touchstart', (e) => e.stopPropagation());
 
     // Keyboard
     photoContainer.setAttribute('tabindex', '0');

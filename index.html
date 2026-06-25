@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Background dimmer (behind boxes layer, not the whole screen) -->
-    <div class="bg-dimmer" id="bgDimmer"></div>
+    <!-- Global dimmer (covers everything except boxes) -->
+    <div class="global-dimmer" id="globalDimmer"></div>
 
     <main class="landing-wrapper">
         <div class="top-text">
@@ -26,12 +26,12 @@
 
         <!-- Photo + Sprite container -->
         <div class="photo-sprite-container" id="photoContainer">
-            <!-- Dim overlay inside the photo container only -->
+            <!-- Internal dimmer covers sprite & photo -->
             <div class="photo-dimmer" id="photoDimmer"></div>
             <img src="sprite.png" alt="Decorative splash" class="sprite-img" id="spriteImg">
             <img src="Foto.png" alt="My photo" class="photo-img" id="photoImg">
 
-            <!-- Corner boxes -->
+            <!-- Corner boxes (stays above all dimmers) -->
             <div class="boxes-layer" id="boxesLayer">
                 <button class="corner-box" data-category="Experiences">Experiences</button>
                 <button class="corner-box" data-category="Tools">Tools</button>
@@ -49,7 +49,7 @@
         </p>
     </main>
 
-    <!-- Overlay backdrop -->
+    <!-- Overlay backdrop (for detail panels) -->
     <div class="overlay-backdrop" id="overlayBackdrop"></div>
 
     <!-- Detail overlay -->

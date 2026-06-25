@@ -1,7 +1,8 @@
 /* ===========================
    style.css
-   Only photo area dims when boxes appear
-   Experiences = rectangular image placeholders
+   Only boxes stay bright when dimmed.
+   Experiences – single placeholder with
+   activity markers (horizontal / vertical)
    =========================== */
 
 *,
@@ -32,18 +33,18 @@ body {
     position: relative;
 }
 
-/* ---- Global dimmer (not used for boxes anymore) ---- */
-.bg-dimmer {
+/* ---- Global dimmer (behind everything) ---- */
+.global-dimmer {
     position: fixed;
     top: 0; left: 0;
     width: 100vw; height: 100vh;
     background: rgba(0, 0, 0, 0);
-    z-index: 5;
+    z-index: 50;                 /* behind photo-container (z-index:60) */
     pointer-events: none;
     transition: background 0.35s ease;
 }
-.bg-dimmer.active {
-    background: rgba(0, 0, 0, 0.55);
+.global-dimmer.active {
+    background: rgba(0, 0, 0, 0.6);
     pointer-events: auto;
 }
 
@@ -100,9 +101,10 @@ body {
     85%{transform:translateY(0)}
 }
 
-/* Photo container */
+/* Photo container – placed above the global dimmer */
 .photo-sprite-container {
     position: relative;
+    z-index: 60;                 /* above global dimmer */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -113,19 +115,19 @@ body {
 }
 .photo-sprite-container:active { transform: scale(0.97); }
 
-/* Photo dimmer - only inside photo container */
+/* Internal dimmer – covers sprite & photo */
 .photo-dimmer {
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0);
-    z-index: 2;
+    background: rgba(0,0,0,0);
+    z-index: 3;                  /* above sprite (1) and photo (2) */
     pointer-events: none;
     border-radius: inherit;
     transition: background 0.35s ease;
 }
 .photo-dimmer.active {
-    background: rgba(0, 0, 0, 0.45);
+    background: rgba(0,0,0,0.5);
 }
 
 .sprite-img {
@@ -134,7 +136,7 @@ body {
     transform: translate(-50%,-50%);
     width: 100%; height: 100%;
     object-fit: contain;
-    z-index: 1;
+    z-index: 1;                  /* beneath dimmer */
     pointer-events: none;
     filter: drop-shadow(0 4px 16px rgba(0,0,0,0.3));
 }
@@ -147,7 +149,7 @@ body {
 
 .photo-img {
     position: relative;
-    z-index: 3;
+    z-index: 2;                  /* beneath dimmer */
     width: clamp(75px, 20vw, 130px);
     height: clamp(75px, 20vw, 130px);
     object-fit: cover;
@@ -165,12 +167,12 @@ body {
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    z-index: 4;
+    z-index: 4;                  /* above internal dimmer → stays bright */
     pointer-events: none;
 }
 .corner-box {
     position: absolute;
-    /* SIZE: adjust width and height here */
+    /* SIZE: adjust width and height */
     width: clamp(110px, 25vw, 180px);
     height: clamp(50px, 9vw, 75px);
     background-color: rgba(255,255,255,0.92);
@@ -193,15 +195,11 @@ body {
     user-select: none;
 }
 
-/* POSITIONS: adjust top/left/right/bottom to move boxes closer/farther from center */
-/* Top-left: Experiences */
-.corner-box:nth-child(1) { top: 8%; left: 8%; }
-/* Top-right: Tools */
-.corner-box:nth-child(2) { top: 8%; right: 8%; }
-/* Bottom-right: Hobbies */
-.corner-box:nth-child(3) { bottom: 8%; right: 8%; }
-/* Bottom-left: Socials */
-.corner-box:nth-child(4) { bottom: 8%; left: 8%; }
+/* POSITIONS: closer to center */
+.corner-box:nth-child(1) { top: 8%; left: 8%; }   /* Experiences */
+.corner-box:nth-child(2) { top: 8%; right: 8%; }   /* Tools */
+.corner-box:nth-child(3) { bottom: 8%; right: 8%; } /* Hobbies */
+.corner-box:nth-child(4) { bottom: 8%; left: 8%; }  /* Socials */
 
 .boxes-layer.visible .corner-box {
     transform: scale(1);
@@ -219,7 +217,7 @@ body {
 }
 .corner-box:active { transform: scale(0.95); }
 
-/* ---- Fixed overlay backdrop ---- */
+/* ---- Fixed overlay backdrop (detail panels) ---- */
 .overlay-backdrop {
     position: fixed;
     top: 0; left: 0;
@@ -296,38 +294,80 @@ body {
     align-items: center;
 }
 
-/* ---- Experiences: Rectangular image placeholders ---- */
-.experiences-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+/* ---- Experiences: single timeline placeholder ---- */
+.experiences-placeholder {
+    position: relative;
     width: 100%;
-}
-.experience-block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.4rem;
-    width: 100%;
-}
-.experience-img-placeholder {
-    width: 100%;
-    height: 120px;
+    height: 150px;               /* adjust height as needed */
     background: #e8d9cc;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #a5714f;
-    font-size: 1rem;
-    font-weight: 600;
+    border-radius: 16px;
     border: 2px dashed #c4a892;
+    margin: 0 auto;
+    overflow: hidden;            /* keep markers inside */
 }
-.experience-label {
-    font-size: 0.9rem;
-    color: #3e2b1c;
-    font-weight: 500;
+
+/* Activity markers – absolutely positioned */
+.activity-marker {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
+    pointer-events: none;        /* only visual, not clickable */
+    color: #3e2b1c;
+}
+.marker-dot {
+    width: 12px; height: 12px;
+    background: #a5714f;
+    border-radius: 50%;
+    margin-bottom: 0.2rem;
+}
+.marker-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+.marker-date {
+    font-size: 0.65rem;
+    opacity: 0.8;
+}
+
+/* Desktop: horizontal timeline */
+@media (min-width: 769px) {
+    .experiences-placeholder {
+        height: 120px;
+    }
+    .activity-marker {
+        top: 50%;                /* all markers vertically centered */
+        transform: translate(-50%, -50%);
+    }
+    /* Positions along the horizontal line (left percentage) */
+    .activity-marker:nth-child(1) { left: 10%; }
+    .activity-marker:nth-child(2) { left: 30%; }
+    .activity-marker:nth-child(3) { left: 50%; }
+    .activity-marker:nth-child(4) { left: 70%; }
+    .activity-marker:nth-child(5) { left: 90%; }
+}
+
+/* Mobile: vertical timeline */
+@media (max-width: 768px) {
+    .experiences-placeholder {
+        width: 80%;
+        height: 320px;           /* taller for vertical stacking */
+        margin: 0 auto;
+    }
+    .activity-marker {
+        left: 50%;               /* horizontally centered */
+        transform: translate(-50%, -50%);
+    }
+    /* Positions along vertical line (top percentage) */
+    .activity-marker:nth-child(1) { top: 10%; }
+    .activity-marker:nth-child(2) { top: 30%; }
+    .activity-marker:nth-child(3) { top: 50%; }
+    .activity-marker:nth-child(4) { top: 70%; }
+    .activity-marker:nth-child(5) { top: 90%; }
 }
 
 /* ---- Hobbies with image placeholders ---- */
@@ -489,20 +529,6 @@ body {
     }
     .detail-title { font-size: 2.2rem; }
 
-    /* Experiences: HORIZONTAL blocks */
-    .experiences-grid {
-        flex-direction: row;
-        gap: 1.5rem;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-    .experience-block {
-        width: 160px;
-    }
-    .experience-img-placeholder {
-        height: 130px;
-    }
-
     /* Hobbies: image left, text right */
     .hobby-item {
         flex-direction: row;
@@ -545,32 +571,19 @@ body {
 @media (max-width: 768px) {
     .detail-overlay { padding: 2rem 1.2rem; }
     .corner-box {
-        /* SIZE for tablet */
         width: clamp(100px, 30vw, 150px);
         height: clamp(48px, 9vw, 65px);
     }
-    /* POSITIONS for tablet */
-    .corner-box:nth-child(1) { top: 10%; left: 10%; }
-    .corner-box:nth-child(2) { top: 10%; right: 10%; }
-    .corner-box:nth-child(3) { bottom: 10%; right: 10%; }
-    .corner-box:nth-child(4) { bottom: 10%; left: 10%; }
 }
 
 /* Small phones */
 @media (max-width: 480px) {
     .corner-box {
-        /* SIZE for phone */
         width: clamp(90px, 35vw, 120px);
         height: clamp(42px, 10vw, 55px);
         font-size: 0.8rem;
         border-radius: 14px;
     }
-    /* POSITIONS for phone */
-    .corner-box:nth-child(1) { top: 12%; left: 12%; }
-    .corner-box:nth-child(2) { top: 12%; right: 12%; }
-    .corner-box:nth-child(3) { bottom: 12%; right: 12%; }
-    .corner-box:nth-child(4) { bottom: 12%; left: 12%; }
-
     .detail-overlay { padding: 1.5rem 1rem; width: 95vw; }
     .intro-paragraph { font-size: 0.85rem; }
 }
