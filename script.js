@@ -1,10 +1,12 @@
 // ===========================
 // script.js
-// Dimmer, timeline, hobbies, tools
+// Only photo area dims for boxes
+// Experiences = rectangular image placeholders
 // ===========================
 
 document.addEventListener('DOMContentLoaded', () => {
     const photoContainer = document.getElementById('photoContainer');
+    const photoDimmer = document.getElementById('photoDimmer');
     const spriteImg = document.getElementById('spriteImg');
     const photoImg = document.getElementById('photoImg');
     const introParagraph = document.getElementById('introParagraph');
@@ -19,16 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let boxesVisible = false;
     let detailVisible = false;
-
-    // ---------- Dimmer control ----------
-    function activateDimmer() {
-        bgDimmer.classList.add('active');
-    }
-    function deactivateDimmer() {
-        if (!detailVisible && !boxesVisible) {
-            bgDimmer.classList.remove('active');
-        }
-    }
 
     // ---------- Visual feedback ----------
     function pulseAndGlow() {
@@ -50,14 +42,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function showBoxes() {
         if (boxesVisible) return;
         boxesLayer.classList.add('visible');
+        photoDimmer.classList.add('active'); // Only dim inside photo container
         boxesVisible = true;
-        activateDimmer();
     }
     function hideBoxes() {
         if (!boxesVisible) return;
         boxesLayer.classList.remove('visible');
+        photoDimmer.classList.remove('active');
         boxesVisible = false;
-        deactivateDimmer();
     }
 
     // ---------- Detail overlay ----------
@@ -97,8 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         detailOverlay.classList.add('visible');
         overlayBackdrop.classList.add('visible');
+        bgDimmer.classList.add('active');
         detailVisible = true;
-        activateDimmer();
         hideBoxes();
     }
 
@@ -106,35 +98,30 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!detailVisible) return;
         detailOverlay.classList.remove('visible');
         overlayBackdrop.classList.remove('visible');
+        bgDimmer.classList.remove('active');
         detailVisible = false;
-        deactivateDimmer();
         showBoxes();
     }
 
-    // ---------- EXPERIENCES: 5-node timeline ----------
+    // ---------- EXPERIENCES: Rectangular image placeholders ----------
     function renderExperiences() {
         const activities = [
-            { date: '2020, Jan', activity: 'Activity 1 – Started learning design fundamentals' },
-            { date: '2020, Aug', activity: 'Activity 2 – Built first portfolio website' },
-            { date: '2021, Jun', activity: 'Activity 3 – Joined creative agency as intern' },
-            { date: '2022, Mar', activity: 'Activity 4 – Led first major client project' },
-            { date: '2023, Dec', activity: 'Activity 5 – Launched independent studio' }
+            { label: 'Activity 1 – Design fundamentals', date: '2020, Jan' },
+            { label: 'Activity 2 – First portfolio website', date: '2020, Aug' },
+            { label: 'Activity 3 – Creative agency intern', date: '2021, Jun' },
+            { label: 'Activity 4 – Led client project', date: '2022, Mar' },
+            { label: 'Activity 5 – Launched studio', date: '2023, Dec' }
         ];
 
-        let html = '<div class="timeline-wrapper">';
-        activities.forEach((item, index) => {
+        let html = '<div class="experiences-grid">';
+        activities.forEach(item => {
             html += `
-                <div class="timeline-node">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-info">
-                        <div class="timeline-date">${item.date}</div>
-                        <div class="timeline-activity">${item.activity}</div>
+                <div class="experience-block">
+                    <div class="experience-img-placeholder">
+                        [Image: ${item.label}]
                     </div>
+                    <div class="experience-label">${item.date} – ${item.label}</div>
                 </div>`;
-            // Add line between nodes (not after last)
-            if (index < activities.length - 1) {
-                html += '<div class="timeline-line"></div>';
-            }
         });
         html += '</div>';
         detailContent.innerHTML = html;
@@ -252,7 +239,6 @@ document.addEventListener('DOMContentLoaded', () => {
         closeDetail();
     }, { passive: false });
 
-    // Dimmer click also closes everything
     bgDimmer.addEventListener('click', () => {
         if (detailVisible) closeDetail();
         else if (boxesVisible) hideBoxes();

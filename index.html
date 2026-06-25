@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Background dimmer -->
+    <!-- Background dimmer (behind boxes layer, not the whole screen) -->
     <div class="bg-dimmer" id="bgDimmer"></div>
 
     <main class="landing-wrapper">
@@ -26,6 +26,8 @@
 
         <!-- Photo + Sprite container -->
         <div class="photo-sprite-container" id="photoContainer">
+            <!-- Dim overlay inside the photo container only -->
+            <div class="photo-dimmer" id="photoDimmer"></div>
             <img src="sprite.png" alt="Decorative splash" class="sprite-img" id="spriteImg">
             <img src="Foto.png" alt="My photo" class="photo-img" id="photoImg">
 
