@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Background dimmer -->
+    <div class="bg-dimmer" id="bgDimmer"></div>
+
     <main class="landing-wrapper">
         <div class="top-text">
             <span class="line line-1">Want to know me more?</span>
@@ -26,7 +29,7 @@
             <img src="sprite.png" alt="Decorative splash" class="sprite-img" id="spriteImg">
             <img src="Foto.png" alt="My photo" class="photo-img" id="photoImg">
 
-            <!-- Corner boxes (much larger) -->
+            <!-- Corner boxes -->
             <div class="boxes-layer" id="boxesLayer">
                 <button class="corner-box" data-category="Experiences">Experiences</button>
                 <button class="corner-box" data-category="Tools">Tools</button>
@@ -44,10 +47,10 @@
         </p>
     </main>
 
-    <!-- Overlay backdrop (fixed) -->
+    <!-- Overlay backdrop -->
     <div class="overlay-backdrop" id="overlayBackdrop"></div>
 
-    <!-- Detail overlay (fixed) -->
+    <!-- Detail overlay -->
     <div class="detail-overlay" id="detailOverlay">
         <button class="close-detail" id="closeDetail" aria-label="Close">✕</button>
         <h2 class="detail-title" id="detailTitle"></h2>

@@ -1,3 +1,10 @@
+/* ===========================
+   style.css
+   Corner boxes closer to center,
+   background dimmer, timeline,
+   hobbies with placeholders
+   =========================== */
+
 *,
 *::before,
 *::after {
@@ -23,11 +30,28 @@ body {
     justify-content: center;
     overflow-x: hidden;
     padding: 1rem;
-    position: relative; /* for fixed overlay positioning */
+    position: relative;
+}
+
+/* ---- Background dimmer ---- */
+.bg-dimmer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0);
+    z-index: 5;
+    pointer-events: none;
+    transition: background 0.35s ease;
+}
+.bg-dimmer.active {
+    background: rgba(0, 0, 0, 0.55);
+    pointer-events: auto;
 }
 
 /* ---- Landing wrapper ---- */
 .landing-wrapper {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -122,7 +146,7 @@ body {
     box-shadow: 0 6px 28px rgba(0,0,0,0.4), 0 0 0 8px rgba(255,255,255,0.35), 0 0 40px rgba(255,255,255,0.25);
 }
 
-/* ---- Corner boxes (LARGER) ---- */
+/* ---- Corner boxes (CLOSER TO CENTER) ---- */
 .boxes-layer {
     position: absolute;
     top: 0; left: 0;
@@ -132,16 +156,17 @@ body {
 }
 .corner-box {
     position: absolute;
-    width: clamp(130px, 30vw, 220px);
-    height: clamp(65px, 12vw, 90px);
+    /* SIZE: adjust width and height here */
+    width: clamp(110px, 25vw, 180px);
+    height: clamp(50px, 9vw, 75px);
     background-color: rgba(255,255,255,0.92);
     color: #a5714f;
     font-family: 'Play', sans-serif;
     font-weight: 700;
-    font-size: clamp(1rem, 3.5vw, 1.4rem);
+    font-size: clamp(0.9rem, 3vw, 1.25rem);
     border: none;
-    border-radius: 20px;
-    box-shadow: 0 8px 22px rgba(0,0,0,0.3);
+    border-radius: 18px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
     cursor: pointer;
     pointer-events: auto;
     transform: scale(0);
@@ -150,15 +175,19 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.6rem 1rem;
+    padding: 0.4rem 0.8rem;
     user-select: none;
 }
 
-/* Positions */
-.corner-box:nth-child(1) { top: -14%; left: -14%; }
-.corner-box:nth-child(2) { top: -14%; right: -14%; }
-.corner-box:nth-child(3) { bottom: -14%; right: -14%; }
-.corner-box:nth-child(4) { bottom: -14%; left: -14%; }
+/* POSITIONS: adjust top/left/right/bottom to move boxes closer/farther from center */
+/* Top-left: Experiences */
+.corner-box:nth-child(1) { top: 8%; left: 8%; }
+/* Top-right: Tools */
+.corner-box:nth-child(2) { top: 8%; right: 8%; }
+/* Bottom-right: Hobbies */
+.corner-box:nth-child(3) { bottom: 8%; right: 8%; }
+/* Bottom-left: Socials */
+.corner-box:nth-child(4) { bottom: 8%; left: 8%; }
 
 .boxes-layer.visible .corner-box {
     transform: scale(1);
@@ -198,7 +227,7 @@ body {
     top: 50%; left: 50%;
     transform: translate(-50%, -50%) scale(0.9);
     width: 90vw;
-    max-width: 700px;
+    max-width: 750px;
     height: auto;
     max-height: 85vh;
     background: rgba(255,255,255,0.96);
@@ -253,35 +282,82 @@ body {
     align-items: center;
 }
 
-/* ---- Timeline (Experiences) ---- */
-.timeline {
+/* ---- Timeline (Experiences) - 5 nodes ---- */
+.timeline-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
+    gap: 0;
 }
-.timeline-item {
+.timeline-node {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 1.8rem;
+    text-align: center;
+    position: relative;
 }
 .timeline-dot {
-    width: 16px; height: 16px;
+    width: 18px; height: 18px;
     background: #a5714f;
     border-radius: 50%;
-    margin-bottom: 0.4rem;
+    flex-shrink: 0;
+    z-index: 1;
 }
-.timeline-text {
+.timeline-info {
+    margin-top: 0.4rem;
+}
+.timeline-date {
+    font-size: 0.85rem;
+    color: #7a5a4a;
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+}
+.timeline-activity {
     font-size: 1rem;
     color: #3e2b1c;
-    text-align: center;
-    line-height: 1.5;
+    font-weight: 500;
+    line-height: 1.3;
 }
 .timeline-line {
-    width: 2px; height: 30px;
+    width: 2px;
+    height: 35px;
     background: #a5714f;
-    margin-bottom: 1.8rem;
+    margin: 0.2rem 0;
+}
+
+/* ---- Hobbies with image placeholders ---- */
+.hobbies-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    width: 100%;
+    max-width: 500px;
+}
+.hobby-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    text-align: center;
+}
+.hobby-img-placeholder {
+    width: 100%;
+    max-width: 300px;
+    height: 120px;
+    background: #e8d9cc;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #a5714f;
+    font-size: 2.5rem;
+    border: 2px dashed #c4a892;
+}
+.hobby-text {
+    font-size: 0.95rem;
+    color: #3e2b1c;
+    line-height: 1.4;
 }
 
 /* ---- Social icons ---- */
@@ -345,7 +421,7 @@ body {
 }
 .tool-choice-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
 
-/* ---- Tool detail container ---- */
+/* ---- Tool detail ---- */
 .tool-detail-container {
     display: flex;
     flex-direction: column;
@@ -403,27 +479,43 @@ body {
 @media (min-width: 769px) {
     .detail-overlay {
         width: 80vw;
-        max-width: 800px;
+        max-width: 850px;
         max-height: 90vh;
         padding: 3rem 2.5rem;
     }
     .detail-title { font-size: 2.2rem; }
 
-    /* Timeline horizontal */
-    .timeline {
+    /* Timeline HORIZONTAL: left to right */
+    .timeline-wrapper {
         flex-direction: row;
+        align-items: center;
         justify-content: center;
-        gap: 2rem;
-        flex-wrap: wrap;
+        gap: 0;
     }
-    .timeline-item {
-        flex-direction: row;
-        margin-bottom: 0;
+    .timeline-node {
+        flex-direction: column;
+        align-items: center;
     }
-    .timeline-dot { margin-bottom: 0; margin-right: 0.6rem; }
     .timeline-line {
-        width: 50px; height: 2px;
-        margin: 0 0.5rem;
+        width: 50px;
+        height: 2px;
+        margin: 0 0.2rem;
+    }
+
+    /* Hobbies: image left, text right */
+    .hobby-item {
+        flex-direction: row;
+        text-align: left;
+        gap: 1.5rem;
+        align-items: center;
+    }
+    .hobby-img-placeholder {
+        width: 150px;
+        height: 100px;
+        flex-shrink: 0;
+    }
+    .hobby-text {
+        flex: 1;
     }
 
     /* Tool detail side-by-side */
@@ -437,55 +529,49 @@ body {
         height: 180px;
         flex-shrink: 0;
     }
-    .tool-detail-text {
-        text-align: left;
-        flex: 1;
-    }
+    .tool-detail-text { text-align: left; flex: 1; }
 
-    /* Social grid */
-    .social-grid {
-        grid-template-columns: repeat(4, 1fr);
-        max-width: 500px;
-    }
-
-    /* Tools selection grid */
-    .tools-selection {
-        grid-template-columns: repeat(4, 1fr);
-        max-width: 600px;
-    }
+    .social-grid { grid-template-columns: repeat(4, 1fr); max-width: 500px; }
+    .tools-selection { grid-template-columns: repeat(4, 1fr); max-width: 600px; }
 
     .intro-extended { display: inline; }
     .intro-paragraph { max-width: 650px; font-size: 1.1rem; }
 }
 
 @media (min-width: 1024px) {
-    .detail-overlay {
-        width: 70vw;
-        max-width: 900px;
-    }
+    .detail-overlay { width: 70vw; max-width: 950px; }
 }
 
 /* Tablet */
 @media (max-width: 768px) {
-    .detail-overlay {
-        padding: 2rem 1.2rem;
-    }
+    .detail-overlay { padding: 2rem 1.2rem; }
     .corner-box {
-        width: clamp(120px, 35vw, 170px);
-        height: clamp(60px, 12vw, 80px);
+        /* SIZE for tablet */
+        width: clamp(100px, 30vw, 150px);
+        height: clamp(48px, 9vw, 65px);
     }
+    /* POSITIONS for tablet */
+    .corner-box:nth-child(1) { top: 10%; left: 10%; }
+    .corner-box:nth-child(2) { top: 10%; right: 10%; }
+    .corner-box:nth-child(3) { bottom: 10%; right: 10%; }
+    .corner-box:nth-child(4) { bottom: 10%; left: 10%; }
 }
 
 /* Small phones */
 @media (max-width: 480px) {
     .corner-box {
-        width: clamp(110px, 40vw, 140px);
-        height: clamp(55px, 14vw, 70px);
-        font-size: 0.9rem;
+        /* SIZE for phone */
+        width: clamp(90px, 35vw, 120px);
+        height: clamp(42px, 10vw, 55px);
+        font-size: 0.8rem;
+        border-radius: 14px;
     }
-    .detail-overlay {
-        padding: 1.5rem 1rem;
-        width: 95vw;
-    }
+    /* POSITIONS for phone */
+    .corner-box:nth-child(1) { top: 12%; left: 12%; }
+    .corner-box:nth-child(2) { top: 12%; right: 12%; }
+    .corner-box:nth-child(3) { bottom: 12%; right: 12%; }
+    .corner-box:nth-child(4) { bottom: 12%; left: 12%; }
+
+    .detail-overlay { padding: 1.5rem 1rem; width: 95vw; }
     .intro-paragraph { font-size: 0.85rem; }
 }
