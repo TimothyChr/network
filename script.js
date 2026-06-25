@@ -1,7 +1,5 @@
 // ===========================
 // script.js
-// Uniform dimming, boxes positioned via JS,
-// Experiences uses timeline.png
 // ===========================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -26,28 +24,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const rect = photoContainer.getBoundingClientRect();
         const boxWidth = cornerBoxes[0].offsetWidth;
         const boxHeight = cornerBoxes[0].offsetHeight;
-        const offset = 0.08; // 8% offset from edge (like before)
+        const offset = 0.08;
 
         // Top-left (Experiences)
-        cornerBoxes[0].style.left = rect.left + rect.width * offset - boxWidth/2 + 'px';
-        cornerBoxes[0].style.top = rect.top + rect.height * offset - boxHeight/2 + 'px';
+        cornerBoxes[0].style.left = (rect.left + rect.width * offset - boxWidth / 2) + 'px';
+        cornerBoxes[0].style.top  = (rect.top  + rect.height * offset - boxHeight / 2) + 'px';
 
         // Top-right (Tools)
-        cornerBoxes[1].style.left = rect.right - rect.width * offset - boxWidth/2 + 'px';
-        cornerBoxes[1].style.top = rect.top + rect.height * offset - boxHeight/2 + 'px';
+        cornerBoxes[1].style.left = (rect.right - rect.width * offset - boxWidth / 2) + 'px';
+        cornerBoxes[1].style.top  = (rect.top   + rect.height * offset - boxHeight / 2) + 'px';
 
         // Bottom-right (Hobbies)
-        cornerBoxes[2].style.left = rect.right - rect.width * offset - boxWidth/2 + 'px';
-        cornerBoxes[2].style.top = rect.bottom - rect.height * offset - boxHeight/2 + 'px';
+        cornerBoxes[2].style.left = (rect.right  - rect.width * offset - boxWidth / 2) + 'px';
+        cornerBoxes[2].style.top  = (rect.bottom - rect.height * offset - boxHeight / 2) + 'px';
 
         // Bottom-left (Socials)
-        cornerBoxes[3].style.left = rect.left + rect.width * offset - boxWidth/2 + 'px';
-        cornerBoxes[3].style.top = rect.bottom - rect.height * offset - boxHeight/2 + 'px';
+        cornerBoxes[3].style.left = (rect.left   + rect.width * offset - boxWidth / 2) + 'px';
+        cornerBoxes[3].style.top  = (rect.bottom - rect.height * offset - boxHeight / 2) + 'px';
     }
 
     window.addEventListener('resize', positionBoxes);
     window.addEventListener('scroll', positionBoxes);
-    // Initial positioning (but hidden)
     positionBoxes();
 
     // ---------- Visual feedback ----------
@@ -69,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ---------- Boxes toggling ----------
     function showBoxes() {
         if (boxesVisible) return;
-        positionBoxes(); // ensure positions are current
+        positionBoxes();
         fixedDimmer.classList.add('active');
         fixedBoxesContainer.classList.add('active');
         boxesVisible = true;
@@ -120,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         detailOverlay.classList.add('visible');
         overlayBackdrop.classList.add('visible');
         detailVisible = true;
-        hideBoxes(); // boxes disappear while detail is open
+        hideBoxes();
     }
 
     function closeDetail() {
@@ -128,12 +125,13 @@ document.addEventListener('DOMContentLoaded', () => {
         detailOverlay.classList.remove('visible');
         overlayBackdrop.classList.remove('visible');
         detailVisible = false;
-        showBoxes(); // boxes reappear
+        showBoxes();
     }
 
-    // ---------- EXPERIENCES: timeline.png with markers ----------
+    // ---------- EXPERIENCES: Fluid timeline image + markers ----------
     function renderExperiences() {
-        // Replace "timeline.png" with your own image path if needed.
+        // Replace "timeline.png" with your image.
+        // Marker positions are set in CSS (see .activity-marker left/top %)
         const activities = [
             { date: '2020, Jan', label: 'Activity 1' },
             { date: '2020, Aug', label: 'Activity 2' },
@@ -153,11 +151,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         detailContent.innerHTML = `
-            <div class="experiences-image-wrapper">
-                <!-- IMPORTANT: Replace 'timeline.png' with your own image file -->
-                <img src="timeline.png" alt="Timeline" class="experiences-image">
+            <div class="timeline-fluid-wrapper">
+                <!-- IMPORTANT: replace "timeline.png" with your own image -->
+                <img src="timeline.png" alt="Timeline" class="timeline-image">
                 ${markersHTML}
             </div>
+            <p style="margin-top:0.8rem; color:#5a4a3a; font-size:0.8rem;">
+                Design your timeline image at <strong>1200 × 200 px</strong> for best results.
+                Adjust marker left/top percentages in CSS.
+            </p>
         `;
     }
 
@@ -248,7 +250,6 @@ document.addEventListener('DOMContentLoaded', () => {
         photoContainer.click();
     }, { passive: false });
 
-    // Corner box clicks (inside fixed container)
     cornerBoxes.forEach(box => {
         box.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -277,13 +278,11 @@ document.addEventListener('DOMContentLoaded', () => {
     detailOverlay.addEventListener('click', (e) => e.stopPropagation());
     detailOverlay.addEventListener('touchstart', (e) => e.stopPropagation());
 
-    // Dimmer click closes boxes
     fixedDimmer.addEventListener('click', () => {
         if (detailVisible) closeDetail();
         else if (boxesVisible) hideBoxes();
     });
 
-    // Keyboard
     photoContainer.setAttribute('tabindex', '0');
     photoContainer.setAttribute('role', 'button');
     photoContainer.setAttribute('aria-label', 'Touch to reveal options');

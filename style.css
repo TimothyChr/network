@@ -1,7 +1,5 @@
 /* ===========================
    style.css
-   Single uniform dimmer, boxes on top.
-   Experiences image = timeline.png
    =========================== */
 
 *,
@@ -85,7 +83,7 @@ body {
     85%{transform:translateY(0)}
 }
 
-/* Photo container – no longer above global dimmer, just normal stacking */
+/* Photo container */
 .photo-sprite-container {
     position: relative;
     display: flex;
@@ -95,7 +93,7 @@ body {
     height: clamp(280px, 85vw, 480px);
     cursor: pointer;
     transition: transform 0.15s ease;
-    z-index: 2; /* just above background, below dimmer */
+    z-index: 2;
 }
 .photo-sprite-container:active { transform: scale(0.97); }
 
@@ -131,7 +129,7 @@ body {
     box-shadow: 0 6px 28px rgba(0,0,0,0.4), 0 0 0 8px rgba(255,255,255,0.35), 0 0 40px rgba(255,255,255,0.25);
 }
 
-/* ---- Fixed dimmer (covers everything uniformly) ---- */
+/* ---- Fixed dimmer ---- */
 .fixed-dimmer {
     position: fixed;
     top: 0; left: 0;
@@ -147,12 +145,12 @@ body {
     pointer-events: auto;
 }
 
-/* ---- Fixed container for corner boxes (above dimmer) ---- */
+/* ---- Fixed corner boxes ---- */
 .fixed-boxes-container {
     position: fixed;
     top: 0; left: 0;
     width: 100vw; height: 100vh;
-    z-index: 200;               /* above dimmer */
+    z-index: 200;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.35s ease;
@@ -163,7 +161,7 @@ body {
 }
 .corner-box {
     position: absolute;
-    /* SIZE: adjust width and height */
+    /* SIZE */
     width: clamp(110px, 25vw, 180px);
     height: clamp(50px, 9vw, 75px);
     background-color: rgba(255,255,255,0.95);
@@ -185,7 +183,7 @@ body {
     padding: 0.4rem 0.8rem;
     user-select: none;
 }
-/* POSITIONS will be set dynamically via JS */
+/* Positions set via JS */
 
 .fixed-boxes-container.active .corner-box {
     transform: scale(1);
@@ -203,7 +201,7 @@ body {
 }
 .corner-box:active { transform: scale(0.95); }
 
-/* ---- Overlay backdrop (for detail panels) ---- */
+/* ---- Overlay backdrop ---- */
 .overlay-backdrop {
     position: fixed;
     top: 0; left: 0;
@@ -219,7 +217,7 @@ body {
     pointer-events: auto;
 }
 
-/* ---- Fixed detail overlay ---- */
+/* ---- Detail overlay ---- */
 .detail-overlay {
     position: fixed;
     top: 50%; left: 50%;
@@ -280,21 +278,22 @@ body {
     align-items: center;
 }
 
-/* ---- Experiences: image with activity markers ---- */
-.experiences-image-wrapper {
+/* ========== EXPERIENCES: Fluid Timeline Image + Markers ========== */
+/* Recommended image dimensions: 1200px wide × 200px tall (keeps markers well-spaced) */
+.timeline-fluid-wrapper {
     position: relative;
     width: 100%;
-    max-width: 800px;
+    max-width: 900px;          /* limits size on large screens */
     margin: 0 auto;
 }
-/* CHANGE THIS IMAGE PATH TO YOUR OWN TIMELINE IMAGE */
-.experiences-image {
+.timeline-image {
     width: 100%;
     height: auto;
     display: block;
     border-radius: 16px;
 }
-/* Activity markers positioned absolutely over the image */
+
+/* Markers placed using percentages – edit these values to match your image */
 .activity-marker {
     position: absolute;
     transform: translate(-50%, -50%);
@@ -304,9 +303,10 @@ body {
     text-align: center;
     pointer-events: none;
     color: #3e2b1c;
-    background: rgba(255,255,255,0.8);
-    padding: 0.2rem 0.4rem;
+    background: rgba(255,255,255,0.85);
+    padding: 0.15rem 0.4rem;
     border-radius: 6px;
+    white-space: nowrap;
 }
 .marker-dot {
     width: 10px; height: 10px;
@@ -318,39 +318,29 @@ body {
     font-size: 0.7rem;
     font-weight: 600;
     line-height: 1.2;
-    white-space: nowrap;
 }
 .marker-date {
     font-size: 0.6rem;
     opacity: 0.8;
 }
 
-/* Desktop: horizontal markers */
+/* Desktop: horizontal markers (all at same vertical position) */
 @media (min-width: 769px) {
-    .experiences-image-wrapper {
-        height: 150px; /* approximate for positioning markers */
-    }
-    .experiences-image {
-        height: 100%;
-        object-fit: contain;
-    }
-    .activity-marker:nth-child(1) { top: 50%; left: 10%; }
-    .activity-marker:nth-child(2) { top: 50%; left: 30%; }
-    .activity-marker:nth-child(3) { top: 50%; left: 50%; }
-    .activity-marker:nth-child(4) { top: 50%; left: 70%; }
-    .activity-marker:nth-child(5) { top: 50%; left: 90%; }
+    .activity-marker { top: 50%; }   /* vertically centered */
+    /* Left positions: adjust these percentages to place markers */
+    .activity-marker:nth-child(1) { left: 10%; }
+    .activity-marker:nth-child(2) { left: 28%; }
+    .activity-marker:nth-child(3) { left: 46%; }
+    .activity-marker:nth-child(4) { left: 64%; }
+    .activity-marker:nth-child(5) { left: 82%; }
 }
 
-/* Mobile/tablet: vertical markers */
+/* Mobile/tablet: vertical markers (left centered, top percentages) */
 @media (max-width: 768px) {
-    .experiences-image-wrapper {
-        width: 80%;
-        margin: 0 auto;
+    .timeline-fluid-wrapper {
+        width: 85%;
     }
-    .activity-marker {
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
+    .activity-marker { left: 50%; }  /* horizontally centered */
     .activity-marker:nth-child(1) { top: 10%; }
     .activity-marker:nth-child(2) { top: 30%; }
     .activity-marker:nth-child(3) { top: 50%; }
@@ -507,7 +497,7 @@ body {
 }
 .intro-extended { display: none; }
 
-/* ---- Desktop adjustments (non‑experiences) ---- */
+/* ---- Desktop adjustments (non-experiences) ---- */
 @media (min-width: 769px) {
     .detail-overlay {
         width: 80vw;
