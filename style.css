@@ -292,7 +292,7 @@ body {
 .markers-row {
     display: flex;
     justify-content: center;
-    gap: 3rem;                /* increased gap between markers */
+    gap: 5rem;                /* increased gap between markers */
     flex-wrap: wrap;
     width: 100%;
     padding: 0.5rem 0;          /* a bit of breathing room */
