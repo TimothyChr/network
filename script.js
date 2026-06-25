@@ -1,26 +1,54 @@
 // ===========================
 // script.js
-// Dim everything except boxes.
-// Experiences – single placeholder with markers.
+// Uniform dimming, boxes positioned via JS,
+// Experiences uses timeline.png
 // ===========================
 
 document.addEventListener('DOMContentLoaded', () => {
     const photoContainer = document.getElementById('photoContainer');
-    const photoDimmer = document.getElementById('photoDimmer');
-    const globalDimmer = document.getElementById('globalDimmer');
+    const fixedDimmer = document.getElementById('fixedDimmer');
+    const fixedBoxesContainer = document.getElementById('fixedBoxesContainer');
+    const cornerBoxes = document.querySelectorAll('.corner-box');
     const spriteImg = document.getElementById('spriteImg');
     const photoImg = document.getElementById('photoImg');
     const introParagraph = document.getElementById('introParagraph');
-    const boxesLayer = document.getElementById('boxesLayer');
     const detailOverlay = document.getElementById('detailOverlay');
     const detailTitle = document.getElementById('detailTitle');
     const detailContent = document.getElementById('detailContent');
     const closeDetailBtn = document.getElementById('closeDetail');
     const overlayBackdrop = document.getElementById('overlayBackdrop');
-    const cornerBoxes = document.querySelectorAll('.corner-box');
 
     let boxesVisible = false;
     let detailVisible = false;
+
+    // ---------- Position boxes relative to photo container ----------
+    function positionBoxes() {
+        const rect = photoContainer.getBoundingClientRect();
+        const boxWidth = cornerBoxes[0].offsetWidth;
+        const boxHeight = cornerBoxes[0].offsetHeight;
+        const offset = 0.08; // 8% offset from edge (like before)
+
+        // Top-left (Experiences)
+        cornerBoxes[0].style.left = rect.left + rect.width * offset - boxWidth/2 + 'px';
+        cornerBoxes[0].style.top = rect.top + rect.height * offset - boxHeight/2 + 'px';
+
+        // Top-right (Tools)
+        cornerBoxes[1].style.left = rect.right - rect.width * offset - boxWidth/2 + 'px';
+        cornerBoxes[1].style.top = rect.top + rect.height * offset - boxHeight/2 + 'px';
+
+        // Bottom-right (Hobbies)
+        cornerBoxes[2].style.left = rect.right - rect.width * offset - boxWidth/2 + 'px';
+        cornerBoxes[2].style.top = rect.bottom - rect.height * offset - boxHeight/2 + 'px';
+
+        // Bottom-left (Socials)
+        cornerBoxes[3].style.left = rect.left + rect.width * offset - boxWidth/2 + 'px';
+        cornerBoxes[3].style.top = rect.bottom - rect.height * offset - boxHeight/2 + 'px';
+    }
+
+    window.addEventListener('resize', positionBoxes);
+    window.addEventListener('scroll', positionBoxes);
+    // Initial positioning (but hidden)
+    positionBoxes();
 
     // ---------- Visual feedback ----------
     function pulseAndGlow() {
@@ -38,24 +66,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 650);
     }
 
-    // ---------- Boxes toggling (with dimming) ----------
+    // ---------- Boxes toggling ----------
     function showBoxes() {
         if (boxesVisible) return;
-        boxesLayer.classList.add('visible');
-        // Activate both dimmers → everything dims except boxes (z-index 4)
-        globalDimmer.classList.add('active');
-        photoDimmer.classList.add('active');
+        positionBoxes(); // ensure positions are current
+        fixedDimmer.classList.add('active');
+        fixedBoxesContainer.classList.add('active');
         boxesVisible = true;
     }
+
     function hideBoxes() {
         if (!boxesVisible) return;
-        boxesLayer.classList.remove('visible');
-        globalDimmer.classList.remove('active');
-        photoDimmer.classList.remove('active');
+        fixedDimmer.classList.remove('active');
+        fixedBoxesContainer.classList.remove('active');
         boxesVisible = false;
     }
 
-    // ---------- Detail overlay (no dimmers from boxes) ----------
+    // ---------- Detail overlay ----------
     function openDetail(category) {
         if (detailVisible) return;
         detailTitle.textContent = category;
@@ -93,8 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         detailOverlay.classList.add('visible');
         overlayBackdrop.classList.add('visible');
         detailVisible = true;
-        // Hide boxes and their dimmers when detail opens
-        hideBoxes();
+        hideBoxes(); // boxes disappear while detail is open
     }
 
     function closeDetail() {
@@ -102,12 +128,12 @@ document.addEventListener('DOMContentLoaded', () => {
         detailOverlay.classList.remove('visible');
         overlayBackdrop.classList.remove('visible');
         detailVisible = false;
-        // Show boxes again (they will reapply dimmers)
-        showBoxes();
+        showBoxes(); // boxes reappear
     }
 
-    // ---------- EXPERIENCES: Single placeholder with markers ----------
+    // ---------- EXPERIENCES: timeline.png with markers ----------
     function renderExperiences() {
+        // Replace "timeline.png" with your own image path if needed.
         const activities = [
             { date: '2020, Jan', label: 'Activity 1' },
             { date: '2020, Aug', label: 'Activity 2' },
@@ -127,10 +153,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         detailContent.innerHTML = `
-            <div class="experiences-placeholder">
+            <div class="experiences-image-wrapper">
+                <!-- IMPORTANT: Replace 'timeline.png' with your own image file -->
+                <img src="timeline.png" alt="Timeline" class="experiences-image">
                 ${markersHTML}
             </div>
-            <p style="margin-top:1rem; color:#3e2b1c; font-size:0.9rem;">(Replace this placeholder with your own design)</p>
         `;
     }
 
@@ -221,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
         photoContainer.click();
     }, { passive: false });
 
+    // Corner box clicks (inside fixed container)
     cornerBoxes.forEach(box => {
         box.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -249,8 +277,8 @@ document.addEventListener('DOMContentLoaded', () => {
     detailOverlay.addEventListener('click', (e) => e.stopPropagation());
     detailOverlay.addEventListener('touchstart', (e) => e.stopPropagation());
 
-    // Global dimmer click closes boxes (if no detail open)
-    globalDimmer.addEventListener('click', () => {
+    // Dimmer click closes boxes
+    fixedDimmer.addEventListener('click', () => {
         if (detailVisible) closeDetail();
         else if (boxesVisible) hideBoxes();
     });

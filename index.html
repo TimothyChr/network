@@ -10,9 +10,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Global dimmer (covers everything except boxes) -->
-    <div class="global-dimmer" id="globalDimmer"></div>
-
     <main class="landing-wrapper">
         <div class="top-text">
             <span class="line line-1">Want to know me more?</span>
@@ -24,20 +21,10 @@
             </svg>
         </div>
 
-        <!-- Photo + Sprite container -->
+        <!-- Photo + Sprite container (no dimming inside) -->
         <div class="photo-sprite-container" id="photoContainer">
-            <!-- Internal dimmer covers sprite & photo -->
-            <div class="photo-dimmer" id="photoDimmer"></div>
             <img src="sprite.png" alt="Decorative splash" class="sprite-img" id="spriteImg">
             <img src="Foto.png" alt="My photo" class="photo-img" id="photoImg">
-
-            <!-- Corner boxes (stays above all dimmers) -->
-            <div class="boxes-layer" id="boxesLayer">
-                <button class="corner-box" data-category="Experiences">Experiences</button>
-                <button class="corner-box" data-category="Tools">Tools</button>
-                <button class="corner-box" data-category="Hobbies">Hobbies</button>
-                <button class="corner-box" data-category="Socials">Socials</button>
-            </div>
         </div>
 
         <p class="intro-paragraph" id="introParagraph">
@@ -48,6 +35,17 @@
             Let's create something beautiful together and make an impact that matters.</span>
         </p>
     </main>
+
+    <!-- Fixed dim overlay (behind boxes) -->
+    <div class="fixed-dimmer" id="fixedDimmer"></div>
+
+    <!-- Fixed container for the corner boxes (always on top) -->
+    <div class="fixed-boxes-container" id="fixedBoxesContainer">
+        <button class="corner-box" data-category="Experiences">Experiences</button>
+        <button class="corner-box" data-category="Tools">Tools</button>
+        <button class="corner-box" data-category="Hobbies">Hobbies</button>
+        <button class="corner-box" data-category="Socials">Socials</button>
+    </div>
 
     <!-- Overlay backdrop (for detail panels) -->
     <div class="overlay-backdrop" id="overlayBackdrop"></div>

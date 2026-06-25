@@ -1,8 +1,7 @@
 /* ===========================
    style.css
-   Only boxes stay bright when dimmed.
-   Experiences – single placeholder with
-   activity markers (horizontal / vertical)
+   Single uniform dimmer, boxes on top.
+   Experiences image = timeline.png
    =========================== */
 
 *,
@@ -31,21 +30,6 @@ body {
     overflow-x: hidden;
     padding: 1rem;
     position: relative;
-}
-
-/* ---- Global dimmer (behind everything) ---- */
-.global-dimmer {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0);
-    z-index: 50;                 /* behind photo-container (z-index:60) */
-    pointer-events: none;
-    transition: background 0.35s ease;
-}
-.global-dimmer.active {
-    background: rgba(0, 0, 0, 0.6);
-    pointer-events: auto;
 }
 
 /* ---- Landing wrapper ---- */
@@ -101,10 +85,9 @@ body {
     85%{transform:translateY(0)}
 }
 
-/* Photo container – placed above the global dimmer */
+/* Photo container – no longer above global dimmer, just normal stacking */
 .photo-sprite-container {
     position: relative;
-    z-index: 60;                 /* above global dimmer */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -112,23 +95,9 @@ body {
     height: clamp(280px, 85vw, 480px);
     cursor: pointer;
     transition: transform 0.15s ease;
+    z-index: 2; /* just above background, below dimmer */
 }
 .photo-sprite-container:active { transform: scale(0.97); }
-
-/* Internal dimmer – covers sprite & photo */
-.photo-dimmer {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0);
-    z-index: 3;                  /* above sprite (1) and photo (2) */
-    pointer-events: none;
-    border-radius: inherit;
-    transition: background 0.35s ease;
-}
-.photo-dimmer.active {
-    background: rgba(0,0,0,0.5);
-}
 
 .sprite-img {
     position: absolute;
@@ -136,7 +105,7 @@ body {
     transform: translate(-50%,-50%);
     width: 100%; height: 100%;
     object-fit: contain;
-    z-index: 1;                  /* beneath dimmer */
+    z-index: 1;
     pointer-events: none;
     filter: drop-shadow(0 4px 16px rgba(0,0,0,0.3));
 }
@@ -149,7 +118,7 @@ body {
 
 .photo-img {
     position: relative;
-    z-index: 2;                  /* beneath dimmer */
+    z-index: 2;
     width: clamp(75px, 20vw, 130px);
     height: clamp(75px, 20vw, 130px);
     object-fit: cover;
@@ -162,20 +131,42 @@ body {
     box-shadow: 0 6px 28px rgba(0,0,0,0.4), 0 0 0 8px rgba(255,255,255,0.35), 0 0 40px rgba(255,255,255,0.25);
 }
 
-/* ---- Corner boxes (CLOSER TO CENTER) ---- */
-.boxes-layer {
-    position: absolute;
+/* ---- Fixed dimmer (covers everything uniformly) ---- */
+.fixed-dimmer {
+    position: fixed;
     top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 4;                  /* above internal dimmer → stays bright */
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.6);
+    z-index: 100;
+    opacity: 0;
     pointer-events: none;
+    transition: opacity 0.35s ease;
+}
+.fixed-dimmer.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ---- Fixed container for corner boxes (above dimmer) ---- */
+.fixed-boxes-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 200;               /* above dimmer */
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+.fixed-boxes-container.active {
+    opacity: 1;
+    pointer-events: auto;
 }
 .corner-box {
     position: absolute;
     /* SIZE: adjust width and height */
     width: clamp(110px, 25vw, 180px);
     height: clamp(50px, 9vw, 75px);
-    background-color: rgba(255,255,255,0.92);
+    background-color: rgba(255,255,255,0.95);
     color: #a5714f;
     font-family: 'Play', sans-serif;
     font-weight: 700;
@@ -194,21 +185,16 @@ body {
     padding: 0.4rem 0.8rem;
     user-select: none;
 }
+/* POSITIONS will be set dynamically via JS */
 
-/* POSITIONS: closer to center */
-.corner-box:nth-child(1) { top: 8%; left: 8%; }   /* Experiences */
-.corner-box:nth-child(2) { top: 8%; right: 8%; }   /* Tools */
-.corner-box:nth-child(3) { bottom: 8%; right: 8%; } /* Hobbies */
-.corner-box:nth-child(4) { bottom: 8%; left: 8%; }  /* Socials */
-
-.boxes-layer.visible .corner-box {
+.fixed-boxes-container.active .corner-box {
     transform: scale(1);
     opacity: 1;
 }
-.boxes-layer.visible .corner-box:nth-child(1) { transition-delay: 0.05s; }
-.boxes-layer.visible .corner-box:nth-child(2) { transition-delay: 0.12s; }
-.boxes-layer.visible .corner-box:nth-child(3) { transition-delay: 0.19s; }
-.boxes-layer.visible .corner-box:nth-child(4) { transition-delay: 0.26s; }
+.fixed-boxes-container.active .corner-box:nth-child(1) { transition-delay: 0.05s; }
+.fixed-boxes-container.active .corner-box:nth-child(2) { transition-delay: 0.12s; }
+.fixed-boxes-container.active .corner-box:nth-child(3) { transition-delay: 0.19s; }
+.fixed-boxes-container.active .corner-box:nth-child(4) { transition-delay: 0.26s; }
 
 .corner-box:hover {
     background-color: #fff;
@@ -217,13 +203,13 @@ body {
 }
 .corner-box:active { transform: scale(0.95); }
 
-/* ---- Fixed overlay backdrop (detail panels) ---- */
+/* ---- Overlay backdrop (for detail panels) ---- */
 .overlay-backdrop {
     position: fixed;
     top: 0; left: 0;
     width: 100vw; height: 100vh;
     background: rgba(0,0,0,0.5);
-    z-index: 100;
+    z-index: 300;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
@@ -245,7 +231,7 @@ body {
     background: rgba(255,255,255,0.96);
     border-radius: 28px;
     box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    z-index: 110;
+    z-index: 310;
     padding: 2.5rem 2rem;
     display: flex;
     flex-direction: column;
@@ -294,19 +280,21 @@ body {
     align-items: center;
 }
 
-/* ---- Experiences: single timeline placeholder ---- */
-.experiences-placeholder {
+/* ---- Experiences: image with activity markers ---- */
+.experiences-image-wrapper {
     position: relative;
     width: 100%;
-    height: 150px;               /* adjust height as needed */
-    background: #e8d9cc;
-    border-radius: 16px;
-    border: 2px dashed #c4a892;
+    max-width: 800px;
     margin: 0 auto;
-    overflow: hidden;            /* keep markers inside */
 }
-
-/* Activity markers – absolutely positioned */
+/* CHANGE THIS IMAGE PATH TO YOUR OWN TIMELINE IMAGE */
+.experiences-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 16px;
+}
+/* Activity markers positioned absolutely over the image */
 .activity-marker {
     position: absolute;
     transform: translate(-50%, -50%);
@@ -314,55 +302,55 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    pointer-events: none;        /* only visual, not clickable */
+    pointer-events: none;
     color: #3e2b1c;
+    background: rgba(255,255,255,0.8);
+    padding: 0.2rem 0.4rem;
+    border-radius: 6px;
 }
 .marker-dot {
-    width: 12px; height: 12px;
+    width: 10px; height: 10px;
     background: #a5714f;
     border-radius: 50%;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.15rem;
 }
 .marker-label {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
     line-height: 1.2;
     white-space: nowrap;
 }
 .marker-date {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     opacity: 0.8;
 }
 
-/* Desktop: horizontal timeline */
+/* Desktop: horizontal markers */
 @media (min-width: 769px) {
-    .experiences-placeholder {
-        height: 120px;
+    .experiences-image-wrapper {
+        height: 150px; /* approximate for positioning markers */
     }
-    .activity-marker {
-        top: 50%;                /* all markers vertically centered */
-        transform: translate(-50%, -50%);
+    .experiences-image {
+        height: 100%;
+        object-fit: contain;
     }
-    /* Positions along the horizontal line (left percentage) */
-    .activity-marker:nth-child(1) { left: 10%; }
-    .activity-marker:nth-child(2) { left: 30%; }
-    .activity-marker:nth-child(3) { left: 50%; }
-    .activity-marker:nth-child(4) { left: 70%; }
-    .activity-marker:nth-child(5) { left: 90%; }
+    .activity-marker:nth-child(1) { top: 50%; left: 10%; }
+    .activity-marker:nth-child(2) { top: 50%; left: 30%; }
+    .activity-marker:nth-child(3) { top: 50%; left: 50%; }
+    .activity-marker:nth-child(4) { top: 50%; left: 70%; }
+    .activity-marker:nth-child(5) { top: 50%; left: 90%; }
 }
 
-/* Mobile: vertical timeline */
+/* Mobile/tablet: vertical markers */
 @media (max-width: 768px) {
-    .experiences-placeholder {
+    .experiences-image-wrapper {
         width: 80%;
-        height: 320px;           /* taller for vertical stacking */
         margin: 0 auto;
     }
     .activity-marker {
-        left: 50%;               /* horizontally centered */
+        left: 50%;
         transform: translate(-50%, -50%);
     }
-    /* Positions along vertical line (top percentage) */
     .activity-marker:nth-child(1) { top: 10%; }
     .activity-marker:nth-child(2) { top: 30%; }
     .activity-marker:nth-child(3) { top: 50%; }
@@ -370,7 +358,7 @@ body {
     .activity-marker:nth-child(5) { top: 90%; }
 }
 
-/* ---- Hobbies with image placeholders ---- */
+/* ---- Hobbies ---- */
 .hobbies-grid {
     display: flex;
     flex-direction: column;
@@ -519,7 +507,7 @@ body {
 }
 .intro-extended { display: none; }
 
-/* ---- Desktop adjustments ---- */
+/* ---- Desktop adjustments (non‑experiences) ---- */
 @media (min-width: 769px) {
     .detail-overlay {
         width: 80vw;
@@ -529,7 +517,6 @@ body {
     }
     .detail-title { font-size: 2.2rem; }
 
-    /* Hobbies: image left, text right */
     .hobby-item {
         flex-direction: row;
         text-align: left;
@@ -543,7 +530,6 @@ body {
     }
     .hobby-text { flex: 1; }
 
-    /* Tool detail side-by-side */
     .tool-detail-container {
         flex-direction: row;
         align-items: flex-start;
@@ -570,10 +556,6 @@ body {
 /* Tablet */
 @media (max-width: 768px) {
     .detail-overlay { padding: 2rem 1.2rem; }
-    .corner-box {
-        width: clamp(100px, 30vw, 150px);
-        height: clamp(48px, 9vw, 65px);
-    }
 }
 
 /* Small phones */
