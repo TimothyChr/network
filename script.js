@@ -90,16 +90,16 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'Socials':
                 detailContent.innerHTML = `
                     <div class="social-grid">
-                        <a href="tel:+1234567890" class="social-item" target="_blank" rel="noopener">
+                        <a href="tel:+6281230021624" class="social-item" target="_blank" rel="noopener">
                             <div class="social-icon">📞</div><span>Phone</span>
                         </a>
-                        <a href="mailto:hello@example.com" class="social-item" target="_blank" rel="noopener">
+                        <a href="mailto:timotiuskris09@gmail.com" class="social-item" target="_blank" rel="noopener">
                             <div class="social-icon">✉️</div><span>Email</span>
                         </a>
-                        <a href="https://instagram.com/yourhandle" class="social-item" target="_blank" rel="noopener">
+                        <a href="https://instagram.com/kris_tito09" class="social-item" target="_blank" rel="noopener">
                             <div class="social-icon">📷</div><span>Instagram</span>
                         </a>
-                        <a href="https://linkedin.com/in/yourprofile" class="social-item" target="_blank" rel="noopener">
+                        <a href="https://linkedin.com/in/timotius-kris-p" class="social-item" target="_blank" rel="noopener">
                             <div class="social-icon">🔗</div><span>LinkedIn</span>
                         </a>
                     </div>`;
@@ -123,11 +123,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // EXPERIENCES: image + markers row
     function renderExperiences() {
         const activities = [
-            { date: '2020, Jan', label: 'Activity 1' },
-            { date: '2020, Aug', label: 'Activity 2' },
-            { date: '2021, Jun', label: 'Activity 3' },
-            { date: '2022, Mar', label: 'Activity 4' },
-            { date: '2023, Dec', label: 'Activity 5' }
+            { date: '2021, Jan-Nov', label: 'Joined Panitia Persiapan PEMIRA' },
+            { date: '2023, Jan', label: 'Internship at Pertamina NRE' },
+            { date: '2024, Aug', label: 'Graduated from Nanotechnology Engineering' },
+            { date: '2025, Aug', label: 'Worked at Wings Surya Driyorejo' },
+            { date: 'Ongoing', label: 'Finding suitable job while upskills' }
         ];
 
         let markersHTML = '';
@@ -157,10 +157,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // HOBBIES
     function renderHobbies() {
         const hobbies = [
-            { icon: '🌿', name: 'Hiking', desc: 'Exploring mountain trails and national parks on weekends.' },
-            { icon: '📚', name: 'Reading', desc: 'Fiction, philosophy, and design books are my escape.' },
-            { icon: '🎨', name: 'Painting', desc: 'Watercolor and acrylic – expressing ideas visually.' },
-            { icon: '🎮', name: 'Gaming', desc: 'Indie games and immersive RPGs in my free time.' }
+            { icon: '🎸', name: 'Music', desc: 'Love playing my guitar while singing, like pop, jazz, indie. Reality Club is my favourite!' },
+            { icon: '📚', name: 'Reading', desc: 'Reading news, research paper, and article help improve and update to current situation and technology advancement.' },
+            { icon: '🎥', name: 'Film', desc: 'While I am bored, sometime I watch film or netflix. I really like psychological horror, drama, and sci-fi.' },
+            { icon: '🎮', name: 'Gaming', desc: 'Open world RPGs and story-based indie game is one of my favourite timekiller. I like to do modding and streaming too!' }
         ];
 
         let html = '<div class="hobbies-grid">';
