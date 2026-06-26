@@ -304,7 +304,7 @@ body {
     text-align: center;
     color: #3e2b1c;
     min-width: 80px;            /* prevents clumping */
-    padding: 0.4rem 1.6rem;     /* extra padding inside each marker */
+    padding: 0.4rem 1.5rem;     /* extra padding inside each marker */
 }
 .marker-dot {
     width: 12px; height: 12px;
@@ -478,20 +478,49 @@ body {
     line-height: 1.4;
 }
 
-/* Desktop: chart left, text right */
 @media (min-width: 769px) {
+    .detail-overlay {
+        width: 85vw;
+        max-width: 850px;       /* wider to accommodate 620px chart + text */
+        padding: 3rem 2.5rem;
+    }
+    
     .chart-entry {
         flex-direction: row;
         align-items: flex-start;
+        gap: 2rem;
     }
+    
     .chart-placeholder {
-        width: 220px;
-        height: 150px;
+        width: 620px;           /* fixed width on desktop */
+        height: 310px;          /* fixed height on desktop */
         flex-shrink: 0;
     }
+    
     .chart-info {
         text-align: left;
         flex: 1;
+        min-width: 0;           /* prevents text overflow */
+    }
+}
+
+@media (min-width: 1024px) {
+    .detail-overlay {
+        width: 75vw;
+        max-width: 950px;       /* even wider on large screens */
+    }
+}
+
+/* Mobile: chart stacked on top */
+@media (max-width: 768px) {
+    .detail-overlay {
+        width: 95vw;
+        padding: 1.5rem 1rem;
+    }
+    
+    .chart-placeholder {
+        max-width: 100%;
+        height: 250px;          /* slightly smaller on mobile */
     }
 }
 
@@ -552,7 +581,7 @@ body {
 /* Desktop adjustments */
 @media (min-width: 769px) {
     .detail-overlay {
-        width: 80vw;
+        width: 85vw;
         max-width: 850px;
         max-height: 90vh;
         padding: 3rem 2.5rem;

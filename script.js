@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const activities = [
             { date: '2021, Jan-Nov', label: 'Joined Panitia <br> Persiapan PEMIRA' },
             { date: '2023, Jan', label: 'Internship at <br> Pertamina NRE' },
-            { date: '2024, Aug', label: 'Graduated from <br> Nanotechnology Engineering' },
+            { date: '2024, Aug', label: 'Graduated from <br> Nanotechnology <br> Engineering' },
             { date: '2025, Aug', label: 'Worked at Wings <br> Surya Driyorejo' },
             { date: 'Ongoing', label: 'Finding suitable <br> job while upskills' }
         ];
@@ -261,37 +261,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showToolDetail(toolName) {
-        detailTitle.textContent = toolName;
-        const analyses = toolsData[toolName] || [];
+		detailTitle.textContent = toolName;
+		const analyses = toolsData[toolName] || [];
 
-        let entriesHTML = '';
-        analyses.forEach(entry => {
-            entriesHTML += `
-                <div class="chart-entry">
-                    <div class="chart-placeholder">${entry.chartPlaceholder}</div>
-                    <div class="chart-info">
-                        <h3 class="chart-entry-title">${entry.title}</h3>
-                        <p class="chart-entry-desc">${entry.description}</p>
-                    </div>
-                </div>`;
-        });
+		let entriesHTML = '';
+		analyses.forEach(entry => {
+			entriesHTML += `
+				<div class="chart-entry">
+					<div class="chart-placeholder">${entry.chartPlaceholder}</div>
+					<div class="chart-info">
+						<h3 class="chart-entry-title">${entry.title}</h3>
+						<p class="chart-entry-desc">${entry.description}</p>
+					</div>
+				</div>`;
+		});
 
-        detailContent.innerHTML = `
-            <button class="back-button" id="backToTools">← Back to all tools</button>
-            <div class="chart-entries-list">
-                ${entriesHTML}
-            </div>
-            <p style="margin-top:1rem; color:#888; font-size:0.8rem;">
-                Scroll to see more analyses ▼
-            </p>
-        `;
-        
-        document.getElementById('backToTools').addEventListener('click', (e) => {
-            e.stopPropagation();
-            detailTitle.textContent = 'Tools';
-            renderToolsSelection();
-        });
-    }
+		detailContent.innerHTML = `
+			<button class="back-button" id="backToTools">← Back to all tools</button>
+			<div class="chart-entries-list">
+				${entriesHTML}
+			</div>
+			${analyses.length > 1 ? '<p style="margin-top:1rem; color:#888; font-size:0.8rem;">Scroll to see more analyses ▼</p>' : ''}
+		`;
+
+		document.getElementById('backToTools').addEventListener('click', (e) => {
+			e.stopPropagation();
+			detailTitle.textContent = 'Tools';
+			renderToolsSelection();
+		});
+	}
 
     // Event listeners
     photoContainer.addEventListener('click', (e) => {
