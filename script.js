@@ -30,29 +30,25 @@ document.addEventListener('DOMContentLoaded', () => {
         ],
         Python: [
             {
-                title: 'Cohort Retention',
-                description: 'Monthly retention curves using pandas and matplotlib.',
-                chartPlaceholder: '[Python cohort plot]'
+                title: 'Customer Segmentation',
+                description: 'Using silhouette and K.',
+                chartPlaceholder: '<img src="Segmentation.png">'
             },
             {
-                title: 'A/B Test Results',
-                description: 'Statistical significance testing with scipy.',
-                chartPlaceholder: '[Python A/B plot]'
+                title: 'Prospensity Model',
+                description: 'Monthly retention curves using pandas and matplotlib.',
+                chartPlaceholder: '<img src="Decile.png">'
             }
         ],
         SQL: [
-            {
-                title: 'Customer Segmentation',
-                description: 'RFM analysis using window functions.',
-                chartPlaceholder: '<img src="Funnel Analysis.png">'
-            },
+
             {
                 title: 'Funnel Analysis',
                 description: 'Conversion funnel built with CTEs and aggregations.',
                 chartPlaceholder: '[SQL funnel]'
             },
             {
-                title: 'Simple Table',
+                title: 'Cohort Analysis',
                 description: 'Basic aggregation and filtering examples.',
                 chartPlaceholder: '[SQL table]'
             }
