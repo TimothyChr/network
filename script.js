@@ -15,6 +15,62 @@ document.addEventListener('DOMContentLoaded', () => {
     let boxesVisible = false;
     let detailVisible = false;
 
+    const toolsData = {
+        Excel: [
+            {
+                title: 'Pivot Table Analysis',
+                description: 'Summarised sales data using pivot tables and conditional formatting.',
+                chartPlaceholder: '[Excel chart]'
+            },
+            {
+                title: 'Forecasting Model',
+                description: 'Linear regression forecast for quarterly revenue.',
+                chartPlaceholder: '[Excel forecast]'
+            }
+        ],
+        Python: [
+            {
+                title: 'Cohort Retention',
+                description: 'Monthly retention curves using pandas and matplotlib.',
+                chartPlaceholder: '[Python cohort plot]'
+            },
+            {
+                title: 'A/B Test Results',
+                description: 'Statistical significance testing with scipy.',
+                chartPlaceholder: '[Python A/B plot]'
+            }
+        ],
+        SQL: [
+            {
+                title: 'Customer Segmentation',
+                description: 'RFM analysis using window functions.',
+                chartPlaceholder: '[SQL query result]'
+            },
+            {
+                title: 'Funnel Analysis',
+                description: 'Conversion funnel built with CTEs and aggregations.',
+                chartPlaceholder: '[SQL funnel]'
+            },
+            {
+                title: 'Simple Table',
+                description: 'Basic aggregation and filtering examples.',
+                chartPlaceholder: '[SQL table]'
+            }
+        ],
+        Tableau: [
+            {
+                title: 'Sales Dashboard',
+                description: 'Interactive dashboard with KPIs and drill-downs.',
+                chartPlaceholder: '[Tableau viz]'
+            },
+            {
+                title: 'Geospatial Map',
+                description: 'Regional performance mapped with custom geocoding.',
+                chartPlaceholder: '[Tableau map]'
+            }
+        ]
+    };
+
     // Position boxes relative to photo container
     function positionBoxes() {
         const rect = photoContainer.getBoundingClientRect();
@@ -123,11 +179,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // EXPERIENCES: image + markers row
     function renderExperiences() {
         const activities = [
-            { date: '2021, Jan-Nov', label: 'Joined Panitia Persiapan PEMIRA' },
-            { date: '2023, Jan', label: 'Internship at Pertamina NRE' },
-            { date: '2024, Aug', label: 'Graduated from Nanotechnology Engineering' },
-            { date: '2025, Aug', label: 'Worked at Wings Surya Driyorejo' },
-            { date: 'Ongoing', label: 'Finding suitable job while upskills' }
+            { date: '2021, Jan-Nov', label: 'Joined Panitia \n Persiapan PEMIRA' },
+            { date: '2023, Jan', label: 'Internship at \n Pertamina NRE' },
+            { date: '2024, Aug', label: 'Graduated from \n Nanotechnology Engineering' },
+            { date: '2025, Aug', label: 'Worked at Wings \n Surya Driyorejo' },
+            { date: 'Ongoing', label: 'Finding suitable \n job while upskills' }
         ];
 
         let markersHTML = '';
@@ -148,9 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="markers-row">
                 ${markersHTML}
             </div>
-            <p style="margin-top:0.8rem; color:#5a4a3a; font-size:0.8rem;">
-                Recommended timeline image size: <strong>1200 × 180 px</strong>
-            </p>
         `;
     }
 
@@ -209,15 +262,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showToolDetail(toolName) {
         detailTitle.textContent = toolName;
+        const analyses = toolsData[toolName] || [];
+
+        let entriesHTML = '';
+        analyses.forEach(entry => {
+            entriesHTML += `
+                <div class="chart-entry">
+                    <div class="chart-placeholder">${entry.chartPlaceholder}</div>
+                    <div class="chart-info">
+                        <h3 class="chart-entry-title">${entry.title}</h3>
+                        <p class="chart-entry-desc">${entry.description}</p>
+                    </div>
+                </div>`;
+        });
+
         detailContent.innerHTML = `
             <button class="back-button" id="backToTools">← Back to all tools</button>
-            <div class="tool-detail-container">
-                <div class="tool-detail-chart">[${toolName} chart]</div>
-                <div class="tool-detail-text">
-                    <strong>${toolName}</strong> – Your skills, experience, and projects with this tool go here. 
-                    Describe what you've achieved and how you use it in your workflow.
-                </div>
-            </div>`;
+            <div class="chart-entries-list">
+                ${entriesHTML}
+            </div>
+            <p style="margin-top:1rem; color:#888; font-size:0.8rem;">
+                Scroll to see more analyses ▼
+            </p>
+        `;
+        
         document.getElementById('backToTools').addEventListener('click', (e) => {
             e.stopPropagation();
             detailTitle.textContent = 'Tools';
