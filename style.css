@@ -304,7 +304,7 @@ body {
     text-align: center;
     color: #3e2b1c;
     min-width: 80px;            /* prevents clumping */
-    padding: 0.4rem 1.5rem;     /* extra padding inside each marker */
+    padding: 0.4rem 1.2rem;     /* extra padding inside each marker */
 }
 .marker-dot {
     width: 12px; height: 12px;
@@ -449,7 +449,7 @@ body {
 .chart-placeholder {
     width: 100%;
     max-width: 620px;
-    height: 310px;
+    height: 340px;
     background: #e8d9cc;
     border-radius: 12px;
     display: flex;
@@ -493,7 +493,7 @@ body {
     
     .chart-placeholder {
         width: 620px;           /* fixed width on desktop */
-        height: 310px;          /* fixed height on desktop */
+        height: 340px;          /* fixed height on desktop */
         flex-shrink: 0;
     }
     
