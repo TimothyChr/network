@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 title: 'Customer Segmentation',
                 description: 'RFM analysis using window functions.',
-                chartPlaceholder: '[SQL query result]'
+                chartPlaceholder: '<img src="Funnel Analysis.png">'
             },
             {
                 title: 'Funnel Analysis',
@@ -179,11 +179,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // EXPERIENCES: image + markers row
     function renderExperiences() {
         const activities = [
-            { date: '2021, Jan-Nov', label: 'Joined Panitia \n Persiapan PEMIRA' },
-            { date: '2023, Jan', label: 'Internship at \n Pertamina NRE' },
-            { date: '2024, Aug', label: 'Graduated from \n Nanotechnology Engineering' },
-            { date: '2025, Aug', label: 'Worked at Wings \n Surya Driyorejo' },
-            { date: 'Ongoing', label: 'Finding suitable \n job while upskills' }
+            { date: '2021, Jan-Nov', label: 'Joined Panitia <br> Persiapan PEMIRA' },
+            { date: '2023, Jan', label: 'Internship at <br> Pertamina NRE' },
+            { date: '2024, Aug', label: 'Graduated from <br> Nanotechnology Engineering' },
+            { date: '2025, Aug', label: 'Worked at Wings <br> Surya Driyorejo' },
+            { date: 'Ongoing', label: 'Finding suitable <br> job while upskills' }
         ];
 
         let markersHTML = '';
